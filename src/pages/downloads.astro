@@ -7,10 +7,10 @@ import early_access from "../../assets/early_access.svg";
 
 <Layout title="Download Yuzu">
   <main class="container bg-secondary dark:bg-primary">
-    <section class="grid justify-around items-center mb-3" id="download-header">
+    <section class="mb-3 grid items-center justify-around" id="download-header">
       <div class="w-full">
-        <h1 class="font-bold text-4xl p-1 float-left">Downloads</h1>
-        <div id="download-buttons" class="rounded-xl float-right">
+        <h1 class="float-left p-1 text-4xl font-bold">Downloads</h1>
+        <div id="download-buttons" class="float-right rounded-xl">
           <a
             href="https://github.com/yuzu-emu/liftinstall/releases/download/1.9/yuzu_install.exe"
             class="button"
@@ -38,14 +38,14 @@ import early_access from "../../assets/early_access.svg";
         </div>
       </div>
     </section>
-    <section class="grid justify-center items-center">
+    <section class="grid items-center justify-center">
       <div class="container w-[80vw]">
         <div id="unsupported-platform-view" class="hidden">
           <article
             class="outline-dashed outline-red-600"
             id="platform-unsupported"
           >
-            <div class="text-white my-5">
+            <div class="my-5 text-white">
               Currently, yuzu doesn't support your platform. If you are running
               Windows x64 or Linux x64 however, choose one of the options above.
             </div>
@@ -185,7 +185,7 @@ import early_access from "../../assets/early_access.svg";
               class="tab-content"
               id="panel-android"
             >
-              <h2 class="hide-with-js mt-5 font-bold text-4xl">
+              <h2 class="hide-with-js mt-5 text-4xl font-bold">
                 Android Instructions
               </h2>
               <article class="message font-semibold">
@@ -197,7 +197,7 @@ import early_access from "../../assets/early_access.svg";
               </article>
 
               <div
-                class="grid grid-flow-col justify-evenly items-center mt-4"
+                class="mt-4 grid grid-flow-col items-center justify-evenly"
                 style="text-align: center;"
               >
                 <div class="column">
@@ -244,12 +244,12 @@ import early_access from "../../assets/early_access.svg";
     </section>
 
     <section>
-      <div class="container mt-4 mx-1">
+      <div class="container mx-1 mt-4">
         <div class="hide-with-js content">
           <h2>Builds</h2>
 
           <article class="message">
-            <div class="message-body text-white mb-6">
+            <div class="message-body mb-6 text-white">
               Hi! We see that you have JavaScript disabled. You can still use
               the above download links but we can't show you an updated listing
               of the available packages for yuzu, nor alternative installation

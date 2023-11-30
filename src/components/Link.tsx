@@ -4,7 +4,7 @@ export const Link: Component<JSX.LinkHTMLAttributes<HTMLLinkElement>> = (
 ) => (
   <>
     <a href={props.href}>
-      <h4 class="text-2xl text-grey dark:text-white font-bold px-1">
+      <h4 class="text-grey px-1 text-2xl font-bold dark:text-white">
         {props.title}
       </h4>
     </a>

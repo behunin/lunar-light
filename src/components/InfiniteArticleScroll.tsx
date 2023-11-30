@@ -47,7 +47,7 @@ export default function InfiniteArticleScroll() {
     createInfiniteScroll(fetcher);
 
   return (
-    <div class="grid grid-flow-row gap-2 justify-center items-center my-4">
+    <div class="my-4 grid grid-flow-row items-center justify-center gap-2">
       <div class="w-full lg:w-9/12">
         <label for="limt-select">Articles per page: </label>
         <select
@@ -66,10 +66,10 @@ export default function InfiniteArticleScroll() {
           <option value="160">160</option>
         </select>
       </div>
-      <div class="grid grid-flow-row gap-2 justify-center items-center w-[80vw] overflow-visible">
+      <div class="grid w-[80vw] grid-flow-row items-center justify-center gap-2 overflow-visible">
         <For each={pages()} fallback={<p class="text-center">No Results</p>}>
           {(item) => (
-            <div class="bg-slate-300 dark:bg-slate-600 rounded-md">
+            <div class="rounded-md bg-slate-300 dark:bg-slate-600">
               <Link href={"/post/" + item.id} title={item.title} />
             </div>
           )}

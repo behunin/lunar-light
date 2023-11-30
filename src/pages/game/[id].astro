@@ -74,13 +74,13 @@ if (error) {
 
 <Layout title={res.data.gameByID.title}>
   <main>
-    <section class="container grid grid-flow-row justify-center items-center">
+    <section class="container grid grid-flow-row items-center justify-center">
       <div>
-        <h1 class="font-bold text-4xl text-center py-2">
+        <h1 class="py-2 text-center text-4xl font-bold">
           {res.data.gameByID.title}
         </h1>
       </div>
-      <div class="grid grid-flow-row md:grid-flow-col gap-1">
+      <div class="grid grid-flow-row gap-1 md:grid-flow-col">
         {
           res.data.gameByID.images && (
             <img src={`${res.data.gameByID.images[0].uri}`} />
@@ -169,7 +169,7 @@ if (error) {
       {
         res.data.gameByID.reports ? (
           <>
-            <h2 class="font-bold text-2xl py-1">Compatibility Reports</h2>
+            <h2 class="py-1 text-2xl font-bold">Compatibility Reports</h2>
             <Accordion>
               {res.data.gameByID.reports.map((report) => (
                 <AccordionItem
@@ -177,7 +177,7 @@ if (error) {
                     report.id + " -- " + report.author + " -- " + report.label
                   }
                 >
-                  <div class="grid grid-flow-row justify-center items-center">
+                  <div class="grid grid-flow-row items-center justify-center">
                     <h2>Report ID: {report.id}</h2>
                     <div class="flex">
                       <span>Description:</span>
@@ -190,7 +190,7 @@ if (error) {
                       Playability: {report.playability[0].name[0].value}
                     </div>
                     {report.screenshots && (
-                      <div class="grid grid-flow-row justify-center items-center">
+                      <div class="grid grid-flow-row items-center justify-center">
                         {report.screenshots.map((img) => (
                           <img src={img.value} />
                         ))}
@@ -213,7 +213,7 @@ if (error) {
             </Accordion>
           </>
         ) : (
-          <h2 class="font-bold text-2xl py-1">No Reports</h2>
+          <h2 class="py-1 text-2xl font-bold">No Reports</h2>
         )
       }
     </section>

@@ -2,7 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import Navigation from "../components/Navigation.astro";
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -10,119 +10,119 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="stylesheet" href="/css/font-awesome.min.css" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<ViewTransitions />
-	</head>
-	<header>
-		<Navigation>
-			<li class="text-center font-bold">
-				<a href="/blog">Blog</a>
-			</li>
-			<li class="text-center font-bold">
-				<a href="/downloads">Download</a>
-			</li>
-			<li class="text-center font-bold">
-				<a href="/faqs">FAQs</a>
-			</li>
-			<li class="text-center font-bold lg:px-3">
-				<a href="/compatibility">Compatibility</a>
-			</li>
-			<li class="text-center font-bold">
-				<a href="https://www.patreon.com/yuzuteam">Patreon</a>
-			</li>
-			<li class="text-center font-bold">
-				<a href="https://profile.yuzu-emu.org/">Profile</a>
-			</li>
-		</Navigation>
-	</header>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <header>
+    <Navigation>
+      <li class="text-center font-bold">
+        <a href="/blog">Blog</a>
+      </li>
+      <li class="text-center font-bold">
+        <a href="/downloads">Download</a>
+      </li>
+      <li class="text-center font-bold">
+        <a href="/faqs">FAQs</a>
+      </li>
+      <li class="text-center font-bold lg:px-3">
+        <a href="/compatibility">Compatibility</a>
+      </li>
+      <li class="text-center font-bold">
+        <a href="https://www.patreon.com/yuzuteam">Patreon</a>
+      </li>
+      <li class="text-center font-bold">
+        <a href="https://profile.yuzu-emu.org/">Profile</a>
+      </li>
+    </Navigation>
+  </header>
+  <body>
+    <slot />
+  </body>
 
-	<style is:global>
-		:root {
-			--action-color: rgb(25, 25, 25);
-			--accent: 136, 58, 234;
-			--accent-light: 224, 204, 250;
-			--accent-dark: 49, 10, 101;
-			--accent-gradient: linear-gradient(
-				45deg,
-				rgb(var(--accent)),
-				rgb(var(--accent-light)) 30%,
-				white 60%
-			);
-			--bg-primary: 148, 163, 184;
-			--bg-secondary: 226, 232, 240;
-			--bg-tertiary: 238, 238, 238;
+  <style is:global>
+    :root {
+      --action-color: rgb(25, 25, 25);
+      --accent: 136, 58, 234;
+      --accent-light: 224, 204, 250;
+      --accent-dark: 49, 10, 101;
+      --accent-gradient: linear-gradient(
+        45deg,
+        rgb(var(--accent)),
+        rgb(var(--accent-light)) 30%,
+        white 60%
+      );
+      --bg-primary: 148, 163, 184;
+      --bg-secondary: 226, 232, 240;
+      --bg-tertiary: 238, 238, 238;
 
-			--text-primary: 0, 0, 0;
-			--text-secondary: 56, 63, 74;
-			--text-tertiary: 255, 255, 255;
-		}
-		* {
-			box-sizing: border-box;
-		}
-		html {
-			scroll-padding-top: 20rem;
-		}
-		body {
-			@apply bg-slate-200 dark:bg-slate-400;
-			display: grid;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			overflow-x: hidden;
-			position: relative;
-			left: calc((100vw - 100%) / 2);
-		}
-		i {
-			font-family: "FontAwesome", normal;
-		}
-		code {
-			font-family:
-				Menlo,
-				Monaco,
-				Lucida Console,
-				Liberation Mono,
-				DejaVu Sans Mono,
-				Bitstream Vera Sans Mono,
-				Courier New,
-				monospace;
-		}
-		.box {
-			background-color: #2d2d2d;
-			border-radius: 6px;
-			box-shadow:
-				0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
-				0 0 0 1px rgba(10, 10, 10, 2%);
-			color: #fff;
-			display: block;
-			padding: 1.25rem;
-		}
-		input:invalid {
-			outline-color: #ef4444;
-		}
-		input:valid:not(:placeholder-shown) {
-			outline-color: #44ef44;
-		}
-		.fa,
-		.fab,
-		.fas {
-			-moz-osx-font-smoothing: grayscale;
-			-webkit-font-smoothing: antialiased;
-			display: var(--fa-display, inline-block);
-			font-style: normal;
-			font-variant: normal;
-			font-weight: 400;
-			line-height: 1;
-			text-rendering: auto;
-		}
-	</style>
+      --text-primary: 0, 0, 0;
+      --text-secondary: 56, 63, 74;
+      --text-tertiary: 255, 255, 255;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-padding-top: 20rem;
+    }
+    body {
+      @apply bg-slate-200 dark:bg-slate-400;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      left: calc((100vw - 100%) / 2);
+    }
+    i {
+      font-family: "FontAwesome", normal;
+    }
+    code {
+      font-family:
+        Menlo,
+        Monaco,
+        Lucida Console,
+        Liberation Mono,
+        DejaVu Sans Mono,
+        Bitstream Vera Sans Mono,
+        Courier New,
+        monospace;
+    }
+    .box {
+      background-color: #2d2d2d;
+      border-radius: 6px;
+      box-shadow:
+        0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 2%);
+      color: #fff;
+      display: block;
+      padding: 1.25rem;
+    }
+    input:invalid {
+      outline-color: #ef4444;
+    }
+    input:valid:not(:placeholder-shown) {
+      outline-color: #44ef44;
+    }
+    .fa,
+    .fab,
+    .fas {
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      display: var(--fa-display, inline-block);
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 400;
+      line-height: 1;
+      text-rendering: auto;
+    }
+  </style>
 </html>
