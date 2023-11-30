@@ -1,25 +1,27 @@
-import moment from 'moment';
+import moment from "moment";
 
 interface Release {
-  assets: Array<{ name: string }>
-  html_url: string
-  published_at: string
-  tag_name: string
-  target_commitish: string
+  assets: Array<{ name: string }>;
+  html_url: string;
+  published_at: string;
+  tag_name: string;
+  target_commitish: string;
 }
 
 function releaseCallback(v: string, count: number, req: XMLHttpRequest) {
   if (req.status !== 200 || req.responseText.length < 10) {
-    document.getElementById(`last-updated-${v}`)!.innerText = 'never';
-    document.getElementById(`unavailable-${v}`)!.classList.remove('is-hidden');
-    document.getElementById(`downloads-${v}`)!.classList.add('is-hidden');
+    document.getElementById(`last-updated-${v}`)!.innerText = "never";
+    document.getElementById(`unavailable-${v}`)!.classList.remove("is-hidden");
+    document.getElementById(`downloads-${v}`)!.classList.add("is-hidden");
     throw new Error(req.responseText);
   }
 
   var releases: Array<Release> = JSON.parse(req.responseText);
   var shownReleases = 0;
 
-  document.getElementById(`last-updated-${v}`)!.innerText = moment(releases[0].published_at).fromNow();
+  document.getElementById(`last-updated-${v}`)!.innerText = moment(
+    releases[0].published_at,
+  ).fromNow();
 
   for (var i = 0; i < releases.length; ++i) {
     var release = releases[i];
@@ -27,9 +29,9 @@ function releaseCallback(v: string, count: number, req: XMLHttpRequest) {
     var windowsFound = false;
     release.assets.forEach(function (asset) {
       /* We only want to provide the msvc builds on the downloads page for Windows. */
-      if (asset.name.includes('-mingw-')) return;
+      if (asset.name.includes("-mingw-")) return;
 
-      if (asset.name.includes('windows')) {
+      if (asset.name.includes("windows")) {
         windowsFound = true;
       }
     });
@@ -43,36 +45,36 @@ function releaseCallback(v: string, count: number, req: XMLHttpRequest) {
     var release_commit = release.target_commitish;
     var release_commit_url = `https://github.com/yuzu-emu/yuzu-${v}/commit/${release_commit}`;
 
-    var release_title = '';
-    if (v == 'mainline') {
-      release_title = 'Mainline Build';
+    var release_title = "";
+    if (v == "mainline") {
+      release_title = "Mainline Build";
     }
 
     if (release_commit) {
-      release_title += ' - ' + release_commit.substring(0, 9);
+      release_title += " - " + release_commit.substring(0, 9);
     }
 
-    var download_span = '';
+    var download_span = "";
 
     release.assets.forEach(function (asset) {
-      if (asset.name.includes('nupkg')) return;
-      if (asset.name.includes('.7z')) return;
-      if (asset.name.includes('RELEASES')) return;
-      if (asset.name.includes('.tar.xz')) return;
-      if (asset.name.includes('-debugsymbols.zip')) return;
-      if (asset.name.includes('.zsync')) return;
+      if (asset.name.includes("nupkg")) return;
+      if (asset.name.includes(".7z")) return;
+      if (asset.name.includes("RELEASES")) return;
+      if (asset.name.includes(".tar.xz")) return;
+      if (asset.name.includes("-debugsymbols.zip")) return;
+      if (asset.name.includes(".zsync")) return;
 
       /* We only want to provide the msvc builds on the downloads page for Windows. */
-      if (asset.name.includes('-mingw-')) return;
+      if (asset.name.includes("-mingw-")) return;
 
       /* We no longer support OSX builds */
-      if (asset.name.includes('osx')) return;
+      if (asset.name.includes("osx")) return;
 
-      var env_icon = 'unknown';
-      if (asset.name.includes('windows')) env_icon = 'windows';
-      else if (asset.name.includes('exe')) env_icon = 'windows';
-      else if (asset.name.includes('osx')) env_icon = 'apple';
-      else if (asset.name.includes('AppImage')) env_icon = 'linux';
+      var env_icon = "unknown";
+      if (asset.name.includes("windows")) env_icon = "windows";
+      else if (asset.name.includes("exe")) env_icon = "windows";
+      else if (asset.name.includes("osx")) env_icon = "apple";
+      else if (asset.name.includes("AppImage")) env_icon = "linux";
 
       var download_url = `https://github.com/yuzu-emu/yuzu-${v}/releases/download/${release.tag_name}/${asset.name}`;
 
@@ -98,8 +100,7 @@ function releaseCallback(v: string, count: number, req: XMLHttpRequest) {
       `;
 
     // TODO: Add information on latest commit
-    document.getElementById(`downloads-${v}`)!.innerHTML +=
-      `<div class="box">
+    document.getElementById(`downloads-${v}`)!.innerHTML += `<div class="box">
              <article class="media">
               <div class="media-content">
                <div class="content">
@@ -119,14 +120,22 @@ function releaseCallback(v: string, count: number, req: XMLHttpRequest) {
 
     shownReleases++;
 
-    if (shownReleases >= count) { break; }
+    if (shownReleases >= count) {
+      break;
+    }
   }
 }
 
 export function getRelease(v: string, count = 3) {
   var netReq = new XMLHttpRequest();
-  netReq.open('GET', `https://api.github.com/repos/yuzu-emu/yuzu-${v}/releases`);
-  netReq.onload = function (this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) {
+  netReq.open(
+    "GET",
+    `https://api.github.com/repos/yuzu-emu/yuzu-${v}/releases`,
+  );
+  netReq.onload = function (
+    this: XMLHttpRequest,
+    ev: ProgressEvent<EventTarget>,
+  ) {
     releaseCallback(v, count, this);
   };
   netReq.send();

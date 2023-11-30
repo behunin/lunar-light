@@ -4,30 +4,38 @@ myHeaders.append("Access-Control-Allow-Origin", "*");
 
 onmessage = (ev) => {
   switch (ev.data.cmd) {
-    case 'game':
+    case "game":
       const title = ev.data.title;
-      fetch(`https://staging.yuzu-emu.org/gaaaraph?queryId=gamesByTitle&variables={"title":"${title}","limit":${ev.data.limit},"offset":${ev.data.offset}}`, { headers: myHeaders, method: "GET", mode: "cors" })
+      fetch(
+        `https://staging.yuzu-emu.org/gaaaraph?queryId=gamesByTitle&variables={"title":"${title}","limit":${ev.data.limit},"offset":${ev.data.offset}}`,
+        { headers: myHeaders, method: "GET", mode: "cors" },
+      )
         .then(async (res) => {
           if (!res.ok) {
             throw res;
           }
           const json = await res.json();
           self.postMessage({ title: title, res: json });
-        }).catch((e) => {
+        })
+        .catch((e) => {
           console.error(e);
         });
       break;
-    case 'article':
-      fetch(`https://staging.yuzu-emu.org/gaaaraph?queryId=articleList&variables={"limit":${ev.data.limit},"offset":${ev.data.offset}}`, { headers: myHeaders, method: "GET", mode: "cors" })
+    case "article":
+      fetch(
+        `https://staging.yuzu-emu.org/gaaaraph?queryId=articleList&variables={"limit":${ev.data.limit},"offset":${ev.data.offset}}`,
+        { headers: myHeaders, method: "GET", mode: "cors" },
+      )
         .then(async (res) => {
           if (!res.ok) {
             throw res;
           }
           const json = await res.json();
           self.postMessage({ res: json });
-        }).catch((e) => {
+        })
+        .catch((e) => {
           console.error(e);
         });
       break;
   }
-}
+};
