@@ -1,0 +1,229 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import json2html from "../../components/JsonViewer";
+import Accordion from "../../components/Accordion.astro";
+import AccordionItem from "../../components/AccordionItem.astro";
+
+export const prerender = false;
+
+interface Value {
+  value: string;
+}
+
+interface Uri {
+  uri: string;
+}
+
+interface Playable {
+  name: Value[];
+  tid: Value[];
+}
+interface Report {
+  description?: string;
+  device_details: string;
+  id: number;
+  label: string;
+  changed: string;
+  author: string;
+  version: string;
+  playability: Playable[];
+  screenshots: Value[];
+}
+
+interface Game {
+  data: {
+    gameByID: {
+      description: string;
+      id: number;
+      title: string;
+      titleLocalizations: Map<number, string>;
+      applicationId: string;
+      summary: string;
+      images?: Uri[];
+      reports: Report[];
+    };
+  };
+}
+
+const id = Astro.params.id;
+
+const myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Access-Control-Allow-Origin", "*");
+let error = false;
+const res: Game = await fetch(
+  `https://staging.yuzu-emu.org/gaaaraph?queryId=gameByID&variables={"id":${id}}`,
+  { headers: myHeaders, method: "GET" },
+)
+  .then(async (res) => {
+    if (!res.ok) throw "FAIL";
+    return await res.json();
+  })
+  .catch((e) => {
+    error = true;
+    console.error(e);
+  });
+
+if (error) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
+}
+---
+
+<Layout title={res.data.gameByID.title}>
+  <main>
+    <section class="container grid grid-flow-row justify-center items-center">
+      <div>
+        <h1 class="font-bold text-4xl text-center py-2">
+          {res.data.gameByID.title}
+        </h1>
+      </div>
+      <div class="grid grid-flow-row md:grid-flow-col gap-1">
+        {
+          res.data.gameByID.images && (
+            <img src={`${res.data.gameByID.images[0].uri}`} />
+          )
+        }
+        <div set:html={res.data.gameByID.description} />
+      </div>
+      <div class="w-full">
+        <table class="table-auto">
+          <tbody>
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: #5c93ed"></div>
+                 Perfect
+              </td>
+              <td
+                >Game functions flawless with no audio or graphical glitches,
+                all tested functionality works as intended without any
+                workarounds needed.</td
+              >
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: #47d35c"></div>
+                 Great
+              </td>
+              <td
+                >Game functions with minor graphical or audio glitches and is
+                playable from start to finish. May require some workarounds.</td
+              >
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: #94b242"></div>
+                 Okay
+              </td>
+              <td
+                >Game functions with major graphical or audio glitches, but game
+                is playable from start to finish with workarounds.</td
+              >
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: #f2d624"></div>
+                 Bad
+              </td>
+              <td
+                >Game functions, but with major graphical or audio glitches.
+                Unable to progress in specific areas due to glitches even with
+                workarounds.</td
+              >
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: red"></div>
+                 Intro/Menu
+              </td>
+              <td
+                >Game is completely unplayable due to major graphical or audio
+                glitches. Unable to progress past the Start Screen.</td
+              >
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: #828282"></div>
+                 Won't Boot
+              </td>
+              <td>The game crashes when attempting to startup.</td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="is-square" style="background-color: black"></div>
+                 Not Tested
+              </td>
+              <td>The game has not yet been tested.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {
+        res.data.gameByID.reports ? (
+          <>
+            <h2 class="font-bold text-2xl py-1">Compatibility Reports</h2>
+            <Accordion>
+              {res.data.gameByID.reports.map((report) => (
+                <AccordionItem
+                  header={
+                    report.id + " -- " + report.author + " -- " + report.label
+                  }
+                >
+                  <div class="grid grid-flow-row justify-center items-center">
+                    <h2>Report ID: {report.id}</h2>
+                    <div class="flex">
+                      <span>Description:</span>
+                      &nbsp;
+                      {report.description && (
+                        <div set:html={report.description} />
+                      )}
+                    </div>
+                    <div>
+                      Playability: {report.playability[0].name[0].value}
+                    </div>
+                    {report.screenshots && (
+                      <div class="grid grid-flow-row justify-center items-center">
+                        {report.screenshots.map((img) => (
+                          <img src={img.value} />
+                        ))}
+                      </div>
+                    )}
+                    <div>Author: {report.author}</div>
+                    <div>Last Updated: {new Date(report.changed)}</div>
+                    <div>Device Details:</div>
+                    {report.device_details && (
+                      <div
+                        set:html={json2html(
+                          JSON.parse(report.device_details),
+                          {},
+                        )}
+                      />
+                    )}
+                  </div>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </>
+        ) : (
+          <h2 class="font-bold text-2xl py-1">No Reports</h2>
+        )
+      }
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .is-square {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+  }
+</style>

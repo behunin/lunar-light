@@ -1,0 +1,171 @@
+---
+import AccordionItem from "./AccordionItem.astro";
+
+interface Props {
+  children: typeof AccordionItem | (typeof AccordionItem)[];
+}
+---
+
+<accord-ion>
+  <ul class="accordion__wrapper">
+    <slot />
+  </ul>
+</accord-ion>
+
+<script>
+  class Accordion extends HTMLElement {
+    accordionItems: Element[];
+    constructor() {
+      super();
+
+      this.accordionItems = [...this.querySelectorAll(".accordion__item")];
+
+      this.accordionItems.forEach((item, index) => {
+        const accordionItemHeader = item.querySelector(".accordion__header")!;
+        const accordionItemPanel = item.querySelector(".accordion__panel")!;
+
+        accordionItemHeader.setAttribute("id", `accordion-item${index + 1}`);
+        accordionItemPanel.setAttribute("id", `item${index + 1}`);
+
+        accordionItemHeader.setAttribute("aria-controls", `item${index + 1}`);
+        accordionItemPanel.setAttribute(
+          "aria-labelledby",
+          `accordion-item${index + 1}`,
+        );
+      });
+
+      this.addEventListener("keydown", (event) => {
+        const el = event.target! as HTMLElement;
+        const accordionItem = el.closest(".accordion__item");
+
+        if (event.key !== "Escape") return;
+        if (!accordionItem) return;
+
+        if (this.isAccordionOpen(accordionItem)) {
+          this.closeAccordionItem(accordionItem);
+        }
+      });
+
+      this.addEventListener("keydown", (event) => {
+        const el = event.target! as HTMLElement;
+        if (!el.closest(".accordion__header")) return;
+
+        const accordionWrapper = el.closest(".accordion__wrapper")!;
+        const accordionItem = el.closest(".accordion__item");
+        const accordionItems = [
+          ...accordionWrapper.querySelectorAll(".accordion__item"),
+        ];
+        const index = accordionItems.findIndex(
+          (element) => element === accordionItem,
+        );
+
+        const { key } = event;
+
+        let targetItem;
+
+        if (key === "ArrowDown") {
+          targetItem = accordionItems[index + 1];
+        }
+
+        if (key === "ArrowUp") {
+          targetItem = accordionItems[index - 1];
+        }
+
+        if (targetItem) {
+          event.preventDefault();
+          const header: HTMLElement =
+            targetItem.querySelector(".accordion__header")!;
+          header.focus();
+        }
+      });
+
+      this.addEventListener("click", (event) => {
+        const el = event.target! as HTMLElement;
+        if (!el.closest(".accordion__item")) return;
+        this.toggleAccordionItem(event);
+      });
+
+      window.onresize = this.recalculateHeight;
+    }
+
+    getPanelHeight(accordionItem: Element) {
+      const accordionInner = accordionItem.querySelector(".panel__inner")!;
+      return accordionInner.getBoundingClientRect().height;
+    }
+
+    openAccordionItem(accordionItem: Element) {
+      const accordionItemHeader =
+        accordionItem.querySelector(".accordion__header")!;
+      const accordionToggleIndicator = accordionItem.querySelector(
+        ".header__toggle-indicator",
+      )!;
+      const accordionPanel: HTMLElement =
+        accordionItem.querySelector(".accordion__panel")!;
+
+      accordionPanel.style.height = `${this.getPanelHeight(accordionItem)}px`;
+      accordionItem.classList.add("is-active");
+      accordionItemHeader.setAttribute("aria-expanded", "true");
+      accordionToggleIndicator.innerHTML = `<svg class="header__toggle-indicator" aria-hidden="true" data-prefix="fas" data-icon="minus" class="svg-inline--fa fa-minus fa-w-14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/></svg>`;
+
+      setTimeout(() => {
+        accordionItem.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 300);
+    }
+
+    closeAccordionItem(accordionItem: Element) {
+      const accordionItemHeader: HTMLElement =
+        accordionItem.querySelector(".accordion__header")!;
+      const accordionToggleIndicator = accordionItem.querySelector(
+        ".header__toggle-indicator",
+      )!;
+      const accordionPanel: HTMLElement =
+        accordionItem.querySelector(".accordion__panel")!;
+
+      accordionItem.classList.remove("is-active");
+      accordionPanel.style.height = "0";
+      accordionItemHeader.focus();
+      accordionItemHeader.setAttribute("aria-expanded", "false");
+      accordionToggleIndicator.innerHTML = `<svg class="header__toggle-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/></svg>`;
+    }
+
+    isAccordionOpen(accordionItem: Element) {
+      return accordionItem.classList.contains("is-active");
+    }
+
+    toggleAccordionItem(event: Event) {
+      const el = event.target! as HTMLElement;
+      const accordionItem = el.closest(".accordion__item");
+      if (!accordionItem || el.closest(".accordion__panel")) return;
+
+      this.isAccordionOpen(accordionItem)
+        ? this.closeAccordionItem(accordionItem)
+        : this.openAccordionItem(accordionItem);
+    }
+
+    recalculateHeight() {
+      const toggledAccordionItems = this.accordionItems.filter((element) =>
+        element.classList.contains("is-active"),
+      );
+
+      toggledAccordionItems.forEach((toggledAccordionItem: Element) => {
+        const accordionPanel: HTMLElement =
+          toggledAccordionItem.querySelector(".accordion__panel")!;
+        accordionPanel.style.height = `${this.getPanelHeight(
+          toggledAccordionItem,
+        )}px`;
+      });
+    }
+  }
+
+  customElements.define("accord-ion", Accordion);
+</script>
+
+<style is:global>
+  .accordion__wrapper {
+    list-style: none;
+    padding: 0;
+  }
+</style>

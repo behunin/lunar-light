@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InfiniteArticleScroll from "../components/InfiniteArticleScroll";
+import ScrollToTop from "../components/ScrollToTop.astro";
+---
+
+<Layout title="Blog">
+  <main class="container">
+    <section>
+      <div class="grid justify-center items-center pb-1 text-center">
+        <h1 class="font-bold text-4xl">Blog Posts</h1>
+      </div>
+    </section>
+    <section>
+      <InfiniteArticleScroll client:only="solid-js" />
+    </section>
+  </main>
+  <ScrollToTop />
+</Layout>

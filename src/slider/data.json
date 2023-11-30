@@ -1,0 +1,88 @@
+{
+  "data": [
+    {
+      "title": "Super Mario",
+      "url": "/001-Super Mario Odyssey.png"
+    },
+    {
+      "title": "Skyward Sword",
+      "url": "/002-The Legend of Zelda Skyward Sword HD.png"
+    },
+    {
+      "title": "Super Smash Bros Ultimate",
+      "url": "/003-Super Smash Bros Ultimate.png"
+    },
+    {
+      "title": "Pokemon Sword",
+      "url": "/004-Pokemon Sword.png"
+    },
+    {
+      "title": "Age of Calamity",
+      "url": "/005-Hyrule Warriors Age of Calamity.png"
+    },
+    {
+      "title": "Paper Mario",
+      "url": "/006-Paper Mario the Origami King.png"
+    },
+    {
+      "title": "Breath of the Wild",
+      "url": "/007-The Legend of Zelda Breath of the Wild.png"
+    },
+    {
+      "title": "ARMS",
+      "url": "/008-ARMS.png"
+    },
+    {
+      "title": "NEO The World Ends With You",
+      "url": "/009-NEO The World Ends With You.png"
+    },
+    {
+      "title": "Animal Crossing",
+      "url": "/010-Animal Crossing New Horizons.png"
+    },
+    {
+      "title": "Monster Hunter Stories 2",
+      "url": "/011-Monster Hunter Stories 2.png"
+    },
+    {
+      "title": "Pokémon Mystery Dungeon Rescue Team DX",
+      "url": "/011-Pokémon Mystery Dungeon Rescue Team DX.png"
+    },
+    {
+      "title": "Links Awakening",
+      "url": "/012-The Legend of Zelda Links Awakening.png"
+    },
+    {
+      "title": "Fire Emblem Three Houses",
+      "url": "/013-Fire Emblem Three Houses.png"
+    },
+    {
+      "title": "Yoshi's Crafted World",
+      "url": "/014-Yoshi's Crafted World.png"
+    },
+    {
+      "title": "Xenoblade Chronicles 2",
+      "url": "/015-Xenoblade Chronicles 2.png"
+    },
+    {
+      "title": "Mario Kart 8 Deluxe",
+      "url": "/016-Mario Kart 8 Deluxe.png"
+    },
+    {
+      "title": "Pokemon Let's Go",
+      "url": "/017-Pokemon Let's Go.png"
+    },
+    {
+      "title": "Splatoon 2",
+      "url": "/018-Splatoon 2.png"
+    },
+    {
+      "title": "Astral Chain",
+      "url": "/019-Astral Chain.png"
+    },
+    {
+      "title": "Luigi's Mansion 3",
+      "url": "/020-Luigi's Mansion 3.png"
+    }
+  ]
+}

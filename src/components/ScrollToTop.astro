@@ -1,0 +1,57 @@
+<scroll-to-top>
+  <div class="scroll-to-top">
+    <span class="btn btn-position btn-style">^</span>
+  </div>
+</scroll-to-top>
+
+<script>
+  class ScrollToTop extends HTMLElement {
+    constructor() {
+      super();
+      const scrollBtn: HTMLSpanElement = this.querySelector(".btn")!;
+      scrollBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+      document.addEventListener("scroll", () => {
+        if (window.scrollY > 800) {
+          scrollBtn.style.visibility = "visible";
+        } else {
+          scrollBtn.style.visibility = "hidden";
+        }
+      });
+    }
+  }
+  customElements.define("scroll-to-top", ScrollToTop);
+</script>
+
+<style>
+  .scroll-to-top {
+    position: relative;
+  }
+
+  .btn-position {
+    position: fixed;
+    bottom: 40px;
+    right: 25px;
+    z-index: 20;
+  }
+
+  .btn-style {
+    background-color: #551b54;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+  }
+</style>

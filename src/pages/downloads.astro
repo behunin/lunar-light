@@ -1,0 +1,576 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import mainline from "../../assets/mainline.svg";
+import early_access from "../../assets/early_access.svg";
+---
+
+<Layout title="Download Yuzu">
+  <main class="container bg-secondary dark:bg-primary">
+    <section class="grid justify-around items-center mb-3" id="download-header">
+      <div class="w-full">
+        <h1 class="font-bold text-4xl p-1 float-left">Downloads</h1>
+        <div id="download-buttons" class="rounded-xl float-right">
+          <a
+            href="https://github.com/yuzu-emu/liftinstall/releases/download/1.9/yuzu_install.exe"
+            class="button"
+            id="dl-button-windows"
+          >
+            <span class="icon mr-1"><i class="fa fa-windows"></i></span>
+             Download for Windows x64
+          </a>
+          <a
+            href="https://github.com/yuzu-emu/liftinstall/releases/download/1.9/liftinstall-31b3e7e.tar.xz"
+            class="button hidden"
+            id="dl-button-linux"
+          >
+            <span class="icon mr-1"><i class="fa fa-linux"></i></span>
+             Download for Linux x64
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=org.yuzu.yuzu_emu"
+            class="button hidden"
+            id="dl-button-android"
+          >
+            <span class="icon mr-1"><i class="fa fa-android"></i></span>
+             Download for Android
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="grid justify-center items-center">
+      <div class="container w-[80vw]">
+        <div id="unsupported-platform-view" class="hidden">
+          <article
+            class="outline-dashed outline-red-600"
+            id="platform-unsupported"
+          >
+            <div class="text-white my-5">
+              Currently, yuzu doesn't support your platform. If you are running
+              Windows x64 or Linux x64 however, choose one of the options above.
+            </div>
+          </article>
+        </div>
+
+        <div class="show-with-js wrapper">
+          <div
+            role="tablist"
+            aria-labelledby="platform-name"
+            id="platform-switcher"
+          >
+            <button
+              id="tab-windows"
+              role="tab"
+              aria-controls="panel-windows"
+              aria-selected="true"
+              tabindex="0"
+            >
+              <span class="icon is-small">
+                <i class="fab fa-windows"></i>
+              </span>
+              <span>Windows</span>
+            </button>
+            <button
+              class="mx-4"
+              id="tab-linux"
+              role="tab"
+              aria-controls="panel-linux"
+              aria-selected="false"
+              tabindex="-1"
+            >
+              <span class="icon is-small">
+                <i class="fab fa-linux"></i>
+              </span>
+              <span>Linux</span>
+            </button>
+            <button
+              id="tab-android"
+              role="tab"
+              aria-controls="panel-android"
+              aria-selected="false"
+              tabindex="-1"
+            >
+              <span class="icon is-small">
+                <i class="fab fa-android"></i>
+              </span>
+              <span>Android</span>
+            </button>
+          </div>
+
+          <div class="content" id="platform-instructions">
+            <div
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-windows"
+              class="tab-content"
+              id="panel-windows"
+            >
+              <h2 class="hide-with-js mt-5">Windows Instructions</h2>
+              <article class="message font-semibold">
+                <div class="message-body">
+                  <p style="color:cyan;margin-bottom: 0px;">
+                    yuzu requires the latest versions of Microsoft Visual C++.
+                    Please download and install the dependency from below.
+                  </p>
+                  <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe"
+                    >Download Microsoft Visual C++ 2022 here!</a
+                  >
+                </div>
+              </article>
+
+              <h4 class="text-2xl font-bold">Windows Installer</h4>
+              <p>
+                The installer will allow you to download your preferred release
+                channel.
+              </p>
+
+              <br />
+              <p>
+                If you are a Patreon subscriber, the "Early Access" channel will
+                be available to you, and will provide early access to exciting
+                experimental changes on top of what is available in the main
+                channel.<br />Please follow our
+                <a href="https://yuzu-emu.org/help/early-access/">
+                  Early Access guide
+                </a>
+                 for assistance linking your Patreon account.
+              </p>
+              <br />
+              <p>
+                Intel and AMD users are strongly recommended to switch to Vulkan
+                by going to:
+                <br />
+                <pre><code>Emulation > Configure > Graphics > APIs</code></pre>
+                 Latest GPU drivers are recommended.
+              </p>
+            </div>
+
+            <div
+              hidden
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-linux"
+              class="tab-content"
+              id="panel-linux"
+            >
+              <h2 class="hide-with-js mt-5">Linux Instructions</h2>
+              <article class="message font-semibold">
+                <div class="message-body">
+                  <p style="color:cyan;margin-bottom: 0px;">
+                    We have yuzu as an AppImage and Flatpak now! This relaxes
+                    dependency requirements for yuzu, as well as enabling it to
+                    run on a lot of older distributions.
+                  </p>
+                </div>
+              </article>
+              <p>
+                If you prefer to use the Flatpak version, you can download it
+                from the<span class="fl-flathub"></span>&nbsp;Flathub.
+              </p>
+              <br />
+               To run yuzu as an AppImage, first download it, then add the
+              executable bit from the terminal:<br />
+              <pre><code> chmod a+x yuzu-*.AppImage</code></pre>
+              <br />
+               Or with the GUI, right click the AppImage, click Properties, then
+              Permissions, then click "Allow this file to run as a program".
+              After that, double-click the AppImage to run it.
+            </div>
+
+            <div
+              hidden
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-android"
+              class="tab-content"
+              id="panel-android"
+            >
+              <h2 class="hide-with-js mt-5 font-bold text-4xl">
+                Android Instructions
+              </h2>
+              <article class="message font-semibold">
+                <div class="message-body">
+                  <p style="color:cyan;margin-bottom: 0px;">
+                    Yuzu requires Android 11 or above.
+                  </p>
+                </div>
+              </article>
+
+              <div
+                class="grid grid-flow-col justify-evenly items-center mt-4"
+                style="text-align: center;"
+              >
+                <div class="column">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=org.yuzu.yuzu_emu"
+                  >
+                    <div style="align-items: center">
+                      <Image
+                        src={mainline}
+                        alt="android yuzu mainline"
+                        width="400"
+                      />
+                    </div>
+                    <img
+                      alt="Get it on Google Play"
+                      src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                      width="200"
+                    />
+                  </a>
+                </div>
+                <div class="column">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=org.yuzu.yuzu_emu.ea"
+                  >
+                    <div style="align-items: center;">
+                      <Image
+                        src={early_access}
+                        alt="android yuzu early access"
+                        width="400"
+                      />
+                    </div>
+                    <img
+                      alt="Get it on Google Play"
+                      src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                      width="200"
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container mt-4 mx-1">
+        <div class="hide-with-js content">
+          <h2>Builds</h2>
+
+          <article class="message">
+            <div class="message-body text-white mb-6">
+              Hi! We see that you have JavaScript disabled. You can still use
+              the above download links but we can't show you an updated listing
+              of the available packages for yuzu, nor alternative installation
+              methods, but we recommend viewing the
+              <a href="https://github.com/yuzu-emu/yuzu-mainline/releases"
+                >Mainline releases on GitHub</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <div class="show-with-js" id="package-view">
+          <hr />
+          <!-- Mainline -->
+          <div>
+            <h2>
+              <bold class="text-4xl font-bold">Builds</bold>
+              <span class="tag is-info">
+                Last release was&nbsp;
+                <span id="last-updated-mainline"></span>
+              </span>
+            </h2>
+
+            <div id="downloads-mainline" class="grid gap-4"></div>
+
+            <div id="unavailable-mainline" class="hidden">
+              There was a problem checking GitHub. Click the link below to view
+              them directly.
+            </div>
+            <br />
+
+            <div class="text-center">
+              <a href="https://github.com/yuzu-emu/yuzu-mainline/releases"
+                >Click here to view previous versions...</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { getRelease } from "../../src/utils/downloads";
+  function getFragment() {
+    const fragment = window.location.hash;
+    if (!fragment) return null;
+    switch (fragment) {
+      case "#linux":
+        return "Linux";
+      case "#android":
+        return "Android";
+      case "#windows":
+        return "Windows";
+    }
+    return null;
+  }
+  const setTabActive = (targetId: string) => {
+    const tabsContainer = document.querySelector("[role=tablist]");
+    if (!tabsContainer) return;
+    const tabButtons = tabsContainer.querySelectorAll("[role=tab]");
+    const tabPanels = document.querySelectorAll("[role=tabpanel]");
+    const oldTab: HTMLElement = tabsContainer.querySelector(
+      '[aria-selected="true"]',
+    )!;
+    const newTab = document.getElementById(targetId)!;
+    const activePanelId = newTab.getAttribute("aria-controls")!;
+    const activePanel = tabsContainer.nextElementSibling?.querySelector(
+      "#" + CSS.escape(activePanelId),
+    );
+    tabButtons.forEach((button) => {
+      button.setAttribute("aria-selected", "false");
+      button.setAttribute("tabindex", "-1");
+    });
+
+    tabPanels.forEach((panel) => {
+      panel.setAttribute("hidden", "true");
+    });
+
+    activePanel?.removeAttribute("hidden");
+
+    newTab.setAttribute("aria-selected", "true");
+    newTab.setAttribute("tabindex", "0");
+    newTab.focus();
+    const fragment = targetId.split("-")[1];
+    window.location.hash = `#${fragment}`;
+    if (oldTab) {
+      moveIndicator(oldTab, newTab);
+    }
+  };
+
+  // move underline indicator
+  const moveIndicator = (oldTab: HTMLElement, newTab: HTMLElement) => {
+    const tabsContainer: HTMLElement =
+      document.querySelector("[role=tablist]")!;
+    const newTabPosition = oldTab.compareDocumentPosition(newTab);
+    const newTabWidth = newTab.offsetWidth / tabsContainer.offsetWidth;
+    let transitionWidth;
+
+    // if the new tab is to the right
+    if (newTabPosition === 4) {
+      transitionWidth =
+        newTab.offsetLeft + newTab.offsetWidth - oldTab.offsetLeft;
+    } else {
+      // if the tab is to the left
+      transitionWidth =
+        oldTab.offsetLeft + oldTab.offsetWidth - newTab.offsetLeft;
+      tabsContainer.style.setProperty("--_left", newTab.offsetLeft + "px");
+    }
+
+    tabsContainer.style.setProperty(
+      "--_width",
+      `${transitionWidth / tabsContainer.offsetWidth}`,
+    );
+
+    setTimeout(() => {
+      tabsContainer.style.setProperty("--_left", newTab.offsetLeft + "px");
+      tabsContainer.style.setProperty("--_width", `${newTabWidth}`);
+    }, 220);
+  };
+
+  const getOSGuess = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+
+    if (userAgent.includes("windows")) {
+      return "Windows";
+    } else if (
+      userAgent.includes("mac") &&
+      !userAgent.includes("mobile") &&
+      !userAgent.includes("phone")
+    ) {
+      return "Mac";
+    } else if (userAgent.includes("android")) {
+      return "Android";
+    } else if (userAgent.includes("linux")) {
+      return "Linux";
+    }
+
+    return "Other";
+  };
+
+  const setupListeners = () => {
+    const tabsContainer = document.querySelector("[role=tablist]");
+    if (!tabsContainer) return;
+
+    tabsContainer.addEventListener("click", (e: Event) => {
+      const el = e.target! as HTMLElement;
+      const clickedTab = el.closest("button");
+      const currentTab = tabsContainer.querySelector('[aria-selected="true"]');
+
+      if (!clickedTab || clickedTab === currentTab) return;
+
+      setTabActive(clickedTab.id);
+      setupPlatform();
+    });
+  };
+
+  const setupPlatform = () => {
+    const win = document.getElementById("dl-button-windows");
+    const and = document.getElementById("dl-button-android");
+    const lin = document.getElementById("dl-button-linux");
+    // Attempt autodetection of their operating system
+    const os = getFragment() || getOSGuess();
+    if (os === "Windows") {
+      win ? win.classList.remove("hidden") : "";
+      and ? and.classList.add("hidden") : "";
+      lin ? lin.classList.add("hidden") : "";
+      setTabActive("tab-windows");
+    }
+    if (os === "Linux") {
+      win ? win.classList.add("hidden") : "";
+      and ? and.classList.add("hidden") : "";
+      lin ? lin.classList.remove("hidden") : "";
+      setTabActive("tab-linux");
+    }
+    if (os === "Android") {
+      win ? win.classList.add("hidden") : "";
+      and ? and.classList.remove("hidden") : "";
+      lin ? lin.classList.add("hidden") : "";
+      setTabActive("tab-android");
+    }
+  };
+
+  setupPlatform();
+  setupListeners();
+  getRelease("mainline");
+
+  document.querySelectorAll(".hide-with-js").forEach((element) => {
+    const el = element as HTMLElement;
+    el.style.display = "none";
+  });
+
+  document.querySelectorAll(".show-with-js").forEach((element) => {
+    const el = element as HTMLElement;
+    el.style.display = "block";
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    setupPlatform();
+    setupListeners();
+    getRelease("mainline");
+
+    document.querySelectorAll(".hide-with-js").forEach((element) => {
+      const el = element as HTMLElement;
+      el.style.display = "none";
+    });
+
+    document.querySelectorAll(".show-with-js").forEach((element) => {
+      const el = element as HTMLElement;
+      el.style.display = "block";
+    });
+  });
+</script>
+
+<style>
+  .button {
+    background-color: #48c78e;
+    border-color: transparent;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    color: #fff;
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    white-space: nowrap;
+  }
+  #download-header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  @media screen and (min-width: 780px) {
+    #download-header {
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+    }
+  }
+  .message {
+    background-color: #212121;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  .message-body {
+    border-color: #dbdbdb;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 0 0 0 4px;
+    color: #fff;
+    padding: 1.25em 1.5em;
+  }
+  [role="tablist"] {
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    border-bottom: 1px solid hsl(0 0% 30%);
+    margin-block: 1rem;
+  }
+
+  [role="tab"] {
+    color: #fff;
+    background: lightblue;
+    background: transparent;
+    padding: 1em 2em;
+    border: 0;
+    font: inherit;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+
+  [role="tablist"]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    scale: var(--_width, 0.125) 1;
+    translate: var(--_left, 0) 0;
+    transform-origin: left;
+    transition:
+      scale 200ms,
+      translate 200ms;
+    background: white;
+  }
+
+  [role="tab"]:hover {
+    opacity: 1;
+  }
+
+  [role="tab"][aria-selected="true"] {
+    opacity: 1;
+  }
+  pre {
+    padding: 16px;
+    overflow: auto;
+    line-height: 1.45;
+    background-color: #101010;
+    border-radius: 6px;
+    color: #4a4a4a;
+  }
+  pre > code {
+    color: #fff;
+  }
+  .icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  .wrapper {
+    width: min(80rem, 100% - 2rem);
+    margin-inline: auto;
+  }
+</style>

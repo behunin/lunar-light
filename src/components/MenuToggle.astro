@@ -1,0 +1,59 @@
+<menu-toggle class="flex justify-center">
+  <button
+    id="responsive-toggle"
+    class="p-0 mt-1 border-none flex lg:hidden"
+    aria-expanded="false"
+    aria-label="Open menu navigation"
+  >
+    <svg
+      width="26"
+      height="21"
+      aria-hidden="true"
+      fill="var(--action-color)"
+      xmlns="http://www.w3.org/2000/svg"
+      ><path
+        d="M2 1.667h24m-24 8h24m-24 8h24"
+        stroke="var(--action-color)"
+        stroke-width="2.667"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path></svg
+    >
+  </button>
+</menu-toggle>
+
+<script>
+  class MenuToggle extends HTMLElement {
+    menuToggle = false;
+    constructor() {
+      super();
+
+      const mobileNavigation = this.querySelector("button")!;
+      mobileNavigation.addEventListener("click", () => {
+        this.menuToggle
+          ? this.closeMenu(mobileNavigation)
+          : this.openMenu(mobileNavigation);
+
+        const menu = this.nextElementSibling!;
+        menu.classList.contains("hidden")
+          ? menu.classList.remove("hidden")
+          : menu.classList.add("hidden");
+      });
+    }
+
+    openMenu(toggle: HTMLElement) {
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", "Close menu navigation");
+      toggle.innerHTML = `<svg width="20" height="20" aria-hidden="true" fill="var(--action-color)" xmlns="http://www.w3.org/2000/svg"><path d="M10 10 2 2m8 8 8 8m-8-8 8-8m-8 8-8 8" stroke="var(--action-color)" stroke-width="2.667" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      this.menuToggle = !this.menuToggle;
+    }
+
+    closeMenu(toggle: HTMLElement) {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu navigation");
+      toggle.innerHTML = `<svg width="26" height="21" aria-hidden="true" fill="var(--action-color)" xmlns="http://www.w3.org/2000/svg"><path d="M2 1.667h24m-24 8h24m-24 8h24" stroke="var(--action-color)" stroke-width="2.667" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      this.menuToggle = !this.menuToggle;
+    }
+  }
+
+  customElements.define("menu-toggle", MenuToggle);
+</script>

@@ -1,0 +1,64 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = false;
+
+interface Article {
+  data: {
+    article: {
+      id: number;
+      title: string;
+      author: string;
+      body: string;
+    };
+  };
+}
+
+const id = Astro.params.id;
+
+const myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Access-Control-Allow-Origin", "*");
+let error = false;
+const res: Article = await fetch(
+  `https://staging.yuzu-emu.org/gaaaraph?queryId=articleByID&variables={"id":${id}}`,
+  { headers: myHeaders, method: "GET" },
+)
+  .then(async (res) => {
+    if (!res.ok) throw "FAIL";
+    const data = await res.json();
+    if (data.data.article === null) throw "Not Found";
+    return data;
+  })
+  .catch((e) => {
+    error = true;
+    console.error(e);
+  });
+
+if (error) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
+---
+
+{
+  res.data.article && (
+    <Layout title={res.data.article.title}>
+      <article class="container">
+        <h1 class="font-bold text-4xl text-center py-2">
+          {res.data.article.title}
+        </h1>
+        <section>
+          <div class="grid justify-center items-center">
+            <div
+              class="grid justify-center items-center"
+              set:html={res.data.article.body}
+            />
+          </div>
+        </section>
+      </article>
+    </Layout>
+  )
+}
