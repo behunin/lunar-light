@@ -25,22 +25,29 @@ export default function InfiniteArticleScroll() {
   }
 
   const fetcher = (page: number) => {
-    return new Promise<Res[]>((resolve) => {
+    return new Promise<Res[]>((resolve, reject) => {
       if (page === 0) {
         setOffset(0);
       } else {
         setOffset((prev) => prev + limit());
       }
       w.postMessage({ cmd: "article", limit: limit(), offset: offset() });
-      setTimeout(() => {
-        const tmp = response();
-        if (tmp.length === limit()) {
-          setEnd(false);
-        } else {
-          setEnd(true);
-        }
-        resolve(tmp);
-      }, 500);
+      let count = 0;
+      (function loop() {
+        if (++count > 3) reject("Failed after 3 attempts");
+        setTimeout(() => {
+          const res = response();
+          if (res.length === 0) {
+            loop();
+          }
+          if (res.length === limit()) {
+            setEnd(false);
+          } else {
+            setEnd(true);
+          }
+          resolve(res);
+        }, 500);
+      })();
     });
   };
   const [pages, infiniteScrollLoader, { end, setEnd }] =
