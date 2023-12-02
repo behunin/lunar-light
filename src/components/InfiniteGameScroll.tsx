@@ -33,23 +33,35 @@ export default function InfiniteGameScroll() {
   }
 
   const fetcher = (page: number) => {
-    return new Promise<Res[]>((resolve) => {
+    return new Promise<Res[]>((resolve, reject) => {
       if (page === 0) {
         resolve([]);
         return;
       }
       const tmp = userTerm();
-      if (tmp.length < 2) return;
+      if (tmp.length < 2) {
+        resolve([]);
+        return;
+      }
       setOffset((prev) => prev + limit());
+      setRes([]);
       w.postMessage({
         cmd: "game",
         title: tmp,
         limit: limit(),
         offset: offset(),
       });
-      setTimeout(() => {
-        resolve(response());
-      }, 500);
+      let count = 0;
+      (function loop() {
+        if (++count > 3) reject("Failed after 3 attempts");
+        setTimeout(() => {
+          const res = response();
+          if (res.length === 0) {
+            loop();
+          }
+          resolve(res);
+        }, 500);
+      })();
     });
   };
   const [
