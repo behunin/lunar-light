@@ -115,7 +115,9 @@ export default function InfiniteGameScroll() {
   });
 
   const validate = (s: string) =>
-    /^[^\~\`\!\@\#\$\%\^\&\*\(\)\<\>\/\?\:\;\'\"\*\+\=]+$/.test(s);
+    /^[^\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]+$/.test(
+      s,
+    );
 
   return (
     <div class="my-4 grid grid-flow-row items-center justify-center gap-2">
