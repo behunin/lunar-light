@@ -690,7 +690,6 @@ import slides from "../slider/data.json";
   <script>
     const cara = document.getElementById("svg815")!;
     const rect = cara?.getBoundingClientRect();
-    console.log({ rect });
     const box = document.getElementById("carousel")!;
 
     const resizeObserver = new ResizeObserver((entries) => {
@@ -711,8 +710,6 @@ import slides from "../slider/data.json";
           box.style.height = `${entry.contentRect.height}px`;
         }
       }
-
-      console.log("Size changed");
     });
 
     resizeObserver.observe(cara);
