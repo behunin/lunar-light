@@ -59,7 +59,7 @@ export default function InfiniteArticleScroll() {
   return (
     <div class="my-4 grid grid-flow-row items-center justify-center gap-2">
       <div class="w-full lg:w-9/12">
-        <label for="limt-select">Articles per page: </label>
+        <label for="limit-select">Articles per page: </label>
         <select
           name="limits"
           id="limit-select"

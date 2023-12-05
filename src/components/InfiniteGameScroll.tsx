@@ -122,7 +122,7 @@ export default function InfiniteGameScroll() {
   return (
     <div class="my-4 grid grid-flow-row items-center justify-center gap-2">
       <div class="w-full lg:w-9/12">
-        <label for="limt-select">Games per page: </label>
+        <label for="limit-select">Games per page: </label>
         <select
           name="limits"
           id="limit-select"
