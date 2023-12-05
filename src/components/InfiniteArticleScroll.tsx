@@ -15,7 +15,7 @@ export default function InfiniteArticleScroll() {
   if (window.Worker) {
     w = new Worker(new URL("../services/cms/cms-worker.ts", import.meta.url));
     w.onmessage = function (ev) {
-      const { id, res } = ev.data;
+      const { res } = ev.data;
       if (res.errors) {
         console.error(...res.errors);
         return;
