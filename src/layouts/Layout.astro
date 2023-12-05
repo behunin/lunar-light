@@ -20,7 +20,7 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <header>
+  <header transition:persist>
     <Navigation>
       <li class="text-center font-bold">
         <a href="/blog">Blog</a>

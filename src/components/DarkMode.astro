@@ -21,28 +21,19 @@
 
 <script>
   class DarkMode extends HTMLElement {
-    darkMode: string | null;
     darkModeToggle: HTMLButtonElement;
     constructor() {
       super();
-      this.darkMode = localStorage.getItem("darkMode");
       this.darkModeToggle = this.querySelector("button")!;
+
+      const darkMode = localStorage.getItem("darkMode");
+      if (darkMode === "enabled") this.enableDarkMode();
+      if (darkMode === "disabled") this.disableDarkMode();
+      if (!darkMode) this.checkPreference();
 
       this.darkModeToggle.addEventListener("click", () => {
         const darkMode = document.documentElement.classList.contains("dark");
-
         !darkMode ? this.enableDarkMode() : this.disableDarkMode();
-      });
-
-      // Listen for view transitions
-      document.addEventListener("astro:after-swap", () => {
-        // Setup
-        this.darkMode = localStorage.getItem("darkMode");
-
-        // Execution
-        if (this.darkMode === "enabled") this.enableDarkMode();
-        if (this.darkMode === "disabled") this.disableDarkMode();
-        if (!this.darkMode) this.checkPreference();
       });
     }
 
