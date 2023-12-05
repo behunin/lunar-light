@@ -30,12 +30,13 @@
 <style>
   .scroll-to-top {
     position: relative;
+    display: none;
   }
 
   .btn-position {
     position: fixed;
     bottom: 40px;
-    right: 25px;
+    right: 8px;
     z-index: 20;
   }
 
@@ -53,5 +54,11 @@
     justify-content: center;
     align-items: center;
     visibility: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .scroll-to-top {
+      display: inline;
+    }
   }
 </style>
