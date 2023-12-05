@@ -17,7 +17,7 @@ type Res = {
 export default function InfiniteGameScroll() {
   const [userTerm, setUserTerm] = createSignal("");
   const [response, setRes] = createSignal([]);
-  const [limit, setLimit] = createSignal(20);
+  const [limit, setLimit] = createSignal(40);
   const [offset, setOffset] = createSignal(0);
   let w: Worker;
   if (window.Worker) {
@@ -131,10 +131,10 @@ export default function InfiniteGameScroll() {
           }}
         >
           <option value="10">10</option>
-          <option value="20" selected>
-            20
+          <option value="20">20</option>
+          <option value="40" selected>
+            40
           </option>
-          <option value="40">40</option>
           <option value="80">80</option>
           <option value="160">160</option>
         </select>
