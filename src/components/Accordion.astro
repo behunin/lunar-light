@@ -14,25 +14,8 @@ interface Props {
 
 <script>
   class Accordion extends HTMLElement {
-    accordionItems: Element[];
     constructor() {
       super();
-
-      this.accordionItems = [...this.querySelectorAll(".accordion__item")];
-
-      this.accordionItems.forEach((item, index) => {
-        const accordionItemHeader = item.querySelector(".accordion__header")!;
-        const accordionItemPanel = item.querySelector(".accordion__panel")!;
-
-        accordionItemHeader.setAttribute("id", `accordion-item${index + 1}`);
-        accordionItemPanel.setAttribute("id", `item${index + 1}`);
-
-        accordionItemHeader.setAttribute("aria-controls", `item${index + 1}`);
-        accordionItemPanel.setAttribute(
-          "aria-labelledby",
-          `accordion-item${index + 1}`,
-        );
-      });
 
       this.addEventListener("keydown", (event) => {
         const el = event.target! as HTMLElement;
@@ -85,7 +68,22 @@ interface Props {
         this.toggleAccordionItem(event);
       });
 
-      window.onresize = this.recalculateHeight;
+      const accordionItems = [...this.querySelectorAll(".accordion__item")];
+      const resizeObserver = new ResizeObserver((entries) => {
+        const toggledAccordionItems = accordionItems.filter((element) =>
+          element.classList.contains("is-active"),
+        );
+
+        toggledAccordionItems.forEach((toggledAccordionItem: Element) => {
+          const accordionPanel: HTMLElement =
+            toggledAccordionItem.querySelector(".accordion__panel")!;
+          accordionPanel.style.height = `${this.getPanelHeight(
+            toggledAccordionItem,
+          )}px`;
+        });
+      });
+
+      resizeObserver.observe(this);
     }
 
     getPanelHeight(accordionItem: Element) {
@@ -144,26 +142,12 @@ interface Props {
         ? this.closeAccordionItem(accordionItem)
         : this.openAccordionItem(accordionItem);
     }
-
-    recalculateHeight() {
-      const toggledAccordionItems = this.accordionItems.filter((element) =>
-        element.classList.contains("is-active"),
-      );
-
-      toggledAccordionItems.forEach((toggledAccordionItem: Element) => {
-        const accordionPanel: HTMLElement =
-          toggledAccordionItem.querySelector(".accordion__panel")!;
-        accordionPanel.style.height = `${this.getPanelHeight(
-          toggledAccordionItem,
-        )}px`;
-      });
-    }
   }
 
   customElements.define("accord-ion", Accordion);
 </script>
 
-<style is:global>
+<style>
   .accordion__wrapper {
     list-style: none;
     padding: 0;

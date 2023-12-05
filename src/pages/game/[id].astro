@@ -171,11 +171,12 @@ if (error) {
           <>
             <h2 class="py-1 text-2xl font-bold">Compatibility Reports</h2>
             <Accordion>
-              {res.data.gameByID.reports.map((report) => (
+              {res.data.gameByID.reports.map((report, idx) => (
                 <AccordionItem
                   header={
                     report.id + " -- " + report.author + " -- " + report.label
                   }
+                  index={idx}
                 >
                   <div class="grid grid-flow-row items-center justify-center">
                     <h2>Report ID: {report.id}</h2>
