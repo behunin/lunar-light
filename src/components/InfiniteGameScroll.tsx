@@ -53,7 +53,10 @@ export default function InfiniteGameScroll() {
       });
       let count = 0;
       (function loop() {
-        if (++count > 3) reject("Failed after 3 attempts");
+        if (++count > 3) {
+          reject("Failed after 3 attempts");
+          return;
+        }
         setTimeout(() => {
           const res = response();
           if (res.length === 0) {
