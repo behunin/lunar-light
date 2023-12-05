@@ -15,7 +15,7 @@ onmessage = (ev) => {
             throw res;
           }
           const json = await res.json();
-          self.postMessage({ title: title, res: json });
+          self.postMessage({ res: json });
         })
         .catch((e) => {
           console.error(e);
