@@ -165,7 +165,7 @@ export default function InfiniteGameScroll() {
           }}
         />
       </div>
-      <div class="grid w-[80vw] grid-flow-row items-center justify-center gap-2 overflow-visible">
+      <div class="mx-auto grid w-[80vw] grid-flow-row items-center justify-center gap-2 overflow-visible">
         <For each={pages()} fallback={<p class="text-center">No Results</p>}>
           {(item) => (
             <div class="rounded-md bg-slate-300 dark:bg-slate-600">
