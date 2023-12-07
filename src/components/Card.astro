@@ -16,7 +16,8 @@ const {
 
 var day_start = new Date(date);
 var day_end = new Date();
-var total_days = (day_end - day_start) / (1000 * 60 * 60 * 24);
+var total_days =
+  (day_end.valueOf() - day_start.valueOf()) / (1000 * 60 * 60 * 24);
 ---
 
 <div
