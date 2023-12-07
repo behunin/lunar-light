@@ -1,16 +1,39 @@
 ---
+import moment from "moment";
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import mainline from "../../assets/mainline.svg";
 import early_access from "../../assets/early_access.svg";
+
+export const prerender = false;
+
+interface Release {
+  assets: Array<{ name: string }>;
+  html_url: string;
+  published_at: string;
+  tag_name: string;
+  target_commitish: string;
+}
+
+const releases: Array<Release> = await fetch(
+  "https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases",
+  {
+    method: "GET",
+  },
+).then(async (res) => {
+  if (!res.ok) throw "NONE";
+  return await res.json();
+});
 ---
 
 <Layout title="Download Yuzu">
-  <main class="container bg-secondary dark:bg-primary">
+  <main
+    class="container bg-secondary text-secondary dark:bg-primary dark:text-primary"
+  >
     <section class="mb-3 grid items-center justify-around" id="download-header">
       <div class="w-full">
         <h1 class="float-left p-1 text-4xl font-bold">Downloads</h1>
-        <div id="download-buttons" class="float-right rounded-xl">
+        <div id="download-buttons" class="float-right mt-4 rounded-xl">
           <a
             href="https://github.com/yuzu-emu/liftinstall/releases/download/1.9/yuzu_install.exe"
             class="button"
@@ -170,7 +193,15 @@ import early_access from "../../assets/early_access.svg";
               <br />
                To run yuzu as an AppImage, first download it, then add the
               executable bit from the terminal:<br />
-              <pre><code> chmod a+x yuzu-*.AppImage</code></pre>
+              <div class="copy-text">
+                <input
+                  type="text"
+                  class="text"
+                  value="chmod a+x yuzu-*.AppImage"
+                  disabled
+                />
+                <button><i class="fa fa-clone"></i></button>
+              </div>
               <br />
                Or with the GUI, right click the AppImage, click Properties, then
               Permissions, then click "Allow this file to run as a program".
@@ -265,15 +296,101 @@ import early_access from "../../assets/early_access.svg";
           <hr />
           <!-- Mainline -->
           <div>
-            <h2>
+            <h2 class="mt-4">
               <bold class="text-4xl font-bold">Builds</bold>
               <span class="tag is-info">
                 Last release was&nbsp;
-                <span id="last-updated-mainline"></span>
+                <span id="last-updated-mainline">
+                  {moment(releases[0].published_at).fromNow()}
+                </span>
               </span>
             </h2>
 
-            <div id="downloads-mainline" class="grid gap-4"></div>
+            <div id="downloads-mainline" class="mt-4 grid gap-4">
+              {
+                releases.map((release) => {
+                  const release_date = moment(release.published_at).fromNow();
+
+                  const release_commit = release.target_commitish;
+                  const release_commit_url = `https://github.com/yuzu-emu/yuzu-mainline/commit/${release_commit}`;
+
+                  let release_title = "Mainline Build";
+
+                  if (release_commit) {
+                    release_title += " - " + release_commit.substring(0, 9);
+                  }
+                  let download_span = "";
+
+                  release.assets.forEach(function (asset) {
+                    if (asset.name.includes("nupkg")) return;
+                    if (asset.name.includes(".7z")) return;
+                    if (asset.name.includes("RELEASES")) return;
+                    if (asset.name.includes(".tar.xz")) return;
+                    if (asset.name.includes("-debugsymbols.zip")) return;
+                    if (asset.name.includes(".zsync")) return;
+
+                    /* We only want to provide the msvc builds on the downloads page for Windows. */
+                    if (asset.name.includes("-mingw-")) return;
+
+                    /* We no longer support OSX builds */
+                    if (asset.name.includes("osx")) return;
+
+                    let env_icon = "unknown";
+                    if (asset.name.includes("windows")) env_icon = "windows";
+                    else if (asset.name.includes("exe")) env_icon = "windows";
+                    else if (asset.name.includes("osx")) env_icon = "apple";
+                    else if (asset.name.includes("AppImage"))
+                      env_icon = "linux";
+
+                    const download_url = `https://github.com/yuzu-emu/yuzu-mainline/releases/download/${release.tag_name}/${asset.name}`;
+
+                    download_span += `
+                        <a class="mx-1">
+                            <a href="${download_url}">
+                                <span class="icon">
+                                    <i class="fab fa-3x fa-${env_icon} text-link"></i>
+                                </span>
+                            </a>
+                        </a>`;
+                  });
+
+                  /* Generate the link to the Github release. */
+                  download_span += `
+                    <a class="mx-1">
+                        <a href="${release.html_url}">
+                            <span class="icon">
+                                <i class="fab fa-3x fa-github text-link"></i>
+                            </span>
+                        </a>
+                    </a>
+                    `;
+
+                  return (
+                    <div class="box">
+                      <article>
+                        <div>
+                          <div>
+                            <p>
+                              <strong>
+                                <a class="text-link" href={release_commit_url}>
+                                  {release_title}
+                                </a>
+                              </strong>
+                              <small class="text-secondary dark:text-primary">
+                                {release_date}
+                              </small>
+                            </p>
+                          </div>
+                          <nav class="mt-4">
+                            <div set:html={download_span} />
+                          </nav>
+                        </div>
+                      </article>
+                    </div>
+                  );
+                })
+              }
+            </div>
 
             <div id="unavailable-mainline" class="hidden">
               There was a problem checking GitHub. Click the link below to view
@@ -294,7 +411,6 @@ import early_access from "../../assets/early_access.svg";
 </Layout>
 
 <script>
-  import { getRelease } from "../components/GithubReleases";
   function getFragment() {
     const fragment = window.location.hash;
     if (!fragment) return null;
@@ -436,7 +552,6 @@ import early_access from "../../assets/early_access.svg";
 
   setupPlatform();
   setupListeners();
-  getRelease("mainline");
 
   document.querySelectorAll(".hide-with-js").forEach((element) => {
     const el = element as HTMLElement;
@@ -446,6 +561,24 @@ import early_access from "../../assets/early_access.svg";
   document.querySelectorAll(".show-with-js").forEach((element) => {
     const el = element as HTMLElement;
     el.style.display = "block";
+  });
+
+  let copyText = document.querySelector(".copy-text")!;
+  copyText.querySelector("button")!.addEventListener("click", function () {
+    let input: HTMLInputElement = copyText.querySelector("input.text")!;
+    input.select();
+    navigator.clipboard.writeText(input.value).then(
+      () => {
+        /* clipboard successfully set */
+        copyText.classList.add("active");
+      },
+      () => {
+        /* clipboard write failed */
+      },
+    );
+    setTimeout(function () {
+      copyText.classList.remove("active");
+    }, 2500);
   });
 
   document.addEventListener("astro:after-swap", () => {
@@ -465,6 +598,16 @@ import early_access from "../../assets/early_access.svg";
 </script>
 
 <style>
+  .box {
+    background-color: #2d2d2d;
+    border-radius: 6px;
+    box-shadow:
+      0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+      0 0 0 1px rgba(10, 10, 10, 2%);
+    color: #fff;
+    display: block;
+    padding: 1rem;
+  }
   .button {
     background-color: #48c78e;
     border-color: transparent;
@@ -516,7 +659,6 @@ import early_access from "../../assets/early_access.svg";
 
   [role="tab"] {
     color: #fff;
-    background: lightblue;
     background: transparent;
     padding: 1em 2em;
     border: 0;
@@ -549,6 +691,66 @@ import early_access from "../../assets/early_access.svg";
 
   [role="tab"][aria-selected="true"] {
     opacity: 1;
+  }
+  .copy-text {
+    position: relative;
+    padding: 10px;
+    background-color: #101010;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    color: #4a4a4a;
+    line-height: 1.45;
+  }
+  .copy-text input {
+    background-color: transparent;
+  }
+  .copy-text input.text {
+    padding: 10px;
+    font-size: 18px;
+    color: #555;
+    border: none;
+    outline: none;
+  }
+  .copy-text button {
+    padding: 10px;
+    background: #5784f5;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+    float: right;
+  }
+
+  .copy-text button:active {
+    background: #809ce2;
+  }
+  .copy-text button:before {
+    content: "Copied";
+    position: absolute;
+    top: -45px;
+    right: 0px;
+    background: #5c81dc;
+    padding: 8px 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    display: none;
+  }
+  .copy-text button:after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 25px;
+    width: 10px;
+    height: 10px;
+    background: #5c81dc;
+    transform: rotate(45deg);
+    display: none;
+  }
+  .copy-text.active button:before,
+  .copy-text.active button:after {
+    display: block;
   }
   pre {
     padding: 16px;

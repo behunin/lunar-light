@@ -65,6 +65,8 @@ const { title } = Astro.props;
       --text-primary: 100, 116, 139;
       --text-secondary: 248, 250, 252;
       --text-tertiary: 255, 255, 255;
+
+      --text-link: 3, 169, 244;
     }
     * {
       box-sizing: border-box;
@@ -97,16 +99,6 @@ const { title } = Astro.props;
         Bitstream Vera Sans Mono,
         Courier New,
         monospace;
-    }
-    .box {
-      background-color: #2d2d2d;
-      border-radius: 6px;
-      box-shadow:
-        0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
-        0 0 0 1px rgba(10, 10, 10, 2%);
-      color: #fff;
-      display: block;
-      padding: 1.25rem;
     }
     input:invalid {
       outline-color: #ef4444;
