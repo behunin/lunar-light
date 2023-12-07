@@ -49,7 +49,7 @@ const id = Astro.params.id;
 
 const myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
-myHeaders.append("Access-Control-Allow-Origin", "*");
+
 let error = false;
 const res: Game = await fetch(
   `https://staging.yuzu-emu.org/gaaaraph?queryId=gameByID&variables={"id":${id}}`,

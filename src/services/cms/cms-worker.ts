@@ -1,6 +1,5 @@
 const myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
-myHeaders.append("Access-Control-Allow-Origin", "*");
 
 onmessage = (ev) => {
   switch (ev.data.cmd) {
