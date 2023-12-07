@@ -3,7 +3,7 @@ interface Props {
   url?: string;
   img?: string;
   title?: string;
-  footer?: string;
+  date?: string;
   children?: string | HTMLElement | HTMLElement[];
 }
 
@@ -11,84 +11,35 @@ const {
   url = "#",
   img = "https://fakeimg.pl/640x360",
   title = "Default title",
-  footer = "Your name",
+  date = "Wed Sept 11 2023",
 } = Astro.props;
+
+var day_start = new Date(date);
+var day_end = new Date();
+var total_days = (day_end - day_start) / (1000 * 60 * 60 * 24);
 ---
 
-<div class="card">
-  <div class="card__image">
-    <img src={img} alt="" />
+<div
+  class="mb-2 flex flex-col justify-between rounded-lg bg-cover bg-center text-gray-50"
+  style=`background-image: url(${img})`
+>
+  <div class="px-4">
+    <span class="text-2xl font-bold">{title}</span>
   </div>
-  <div class="card__content">
-    <h3>
-      <a href={url}>{title}</a>
-    </h3>
-    <p>
-      <slot>Default description.</slot>
-    </p>
-    <small>
-      {footer}
-    </small>
+  <div class="px-4">
+    <span>{date}</span> -
+    <span>{Math.round(total_days)} days ago</span>
+  </div>
+  <div class="mt-4 px-4">
+    <span>
+      <p>
+        <slot />
+      </p>
+    </span>
+  </div>
+  <div class="mt-4 px-4 py-2">
+    <span class="rounded-md p-1 outline">
+      <a href={url}> Read More</a>
+    </span>
   </div>
 </div>
-
-<style is:global>
-  .card {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid black;
-    border-radius: 0.5rem;
-    max-width: 60ch;
-    min-height: 100%;
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.15s ease-in-out;
-  }
-
-  .card:hover,
-  .card:focus-within {
-    box-shadow: 0 0 0 0.25rem;
-  }
-
-  .card:focus-within a:focus {
-    text-decoration: none;
-    box-shadow: none;
-    outline: none;
-  }
-
-  .card__image {
-    height: 10rem;
-  }
-
-  .card__image img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-
-  .card__content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 1rem;
-  }
-
-  .card__content a {
-    text-decoration: none;
-  }
-
-  .card__content a:focus {
-    text-decoration: underline;
-  }
-
-  .card__content a::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-  }
-
-  .card__content:last-child {
-    margin-top: auto;
-    padding-top: 2rem;
-  }
-</style>

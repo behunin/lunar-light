@@ -124,6 +124,7 @@ export default function InfiniteGameScroll() {
       <div class="w-full lg:w-9/12">
         <label for="limit-select">Games per page: </label>
         <select
+          class="bg-secondary outline outline-1 dark:bg-primary"
           name="limits"
           id="limit-select"
           onChange={(ev) => {
@@ -168,7 +169,7 @@ export default function InfiniteGameScroll() {
       <div class="mx-auto grid w-[80vw] grid-flow-row items-center justify-center gap-2 overflow-visible">
         <For each={pages()} fallback={<p class="text-center">No Results</p>}>
           {(item) => (
-            <div class="rounded-md bg-slate-300 dark:bg-slate-600">
+            <div class="rounded-md bg-slate-600 dark:bg-slate-800">
               <Link href={"/game/" + item.id} title={item.title} />
             </div>
           )}

@@ -20,7 +20,7 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <header transition:persist>
+  <header transition:persist class="sticky top-0 z-50 w-screen">
     <Navigation>
       <li class="text-center font-bold">
         <a href="/blog">Blog</a>
@@ -58,12 +58,12 @@ const { title } = Astro.props;
         rgb(var(--accent-light)) 30%,
         white 60%
       );
-      --bg-primary: 148, 163, 184;
-      --bg-secondary: 226, 232, 240;
-      --bg-tertiary: 238, 238, 238;
+      --bg-primary: 33, 33, 33;
+      --bg-secondary: 35, 54, 59;
+      --bg-tertiary: 45, 45, 45;
 
-      --text-primary: 0, 0, 0;
-      --text-secondary: 56, 63, 74;
+      --text-primary: 100, 116, 139;
+      --text-secondary: 248, 250, 252;
       --text-tertiary: 255, 255, 255;
     }
     * {
@@ -73,14 +73,16 @@ const { title } = Astro.props;
       scroll-padding-top: 20rem;
     }
     body {
-      @apply bg-slate-200 dark:bg-slate-400;
-      display: grid;
+      @apply bg-secondary dark:bg-primary;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       width: 100%;
       overflow-x: hidden;
-      position: relative;
       left: calc((100vw - 100%) / 2);
+      margin-right: auto;
+      margin-left: auto;
     }
     i {
       font-family: "FontAwesome", normal;

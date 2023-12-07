@@ -451,7 +451,6 @@ import early_access from "../../assets/early_access.svg";
   document.addEventListener("astro:after-swap", () => {
     setupPlatform();
     setupListeners();
-    getRelease("mainline");
 
     document.querySelectorAll(".hide-with-js").forEach((element) => {
       const el = element as HTMLElement;
