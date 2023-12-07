@@ -5,8 +5,6 @@ import { Image } from "astro:assets";
 import mainline from "../../assets/mainline.svg";
 import early_access from "../../assets/early_access.svg";
 
-export const prerender = false;
-
 interface Release {
   assets: Array<{ name: string }>;
   html_url: string;
@@ -14,16 +12,28 @@ interface Release {
   tag_name: string;
   target_commitish: string;
 }
-
+let error = false;
 const releases: Array<Release> = await fetch(
   "https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases",
   {
     method: "GET",
   },
-).then(async (res) => {
-  if (!res.ok) throw "NONE";
-  return await res.json();
-});
+)
+  .then(async (res) => {
+    if (!res.ok) throw "NONE";
+    return await res.json();
+  })
+  .catch((e) => {
+    error = true;
+    console.error(e);
+  });
+
+if (error) {
+  return new Response(null, {
+    status: 404,
+    statusText: "No Releases",
+  });
+}
 ---
 
 <Layout title="Download Yuzu">
