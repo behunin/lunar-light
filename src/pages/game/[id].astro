@@ -74,7 +74,9 @@ if (error) {
 
 <Layout title={res.data.gameByID.title}>
   <main>
-    <section class="container grid grid-flow-row items-center justify-center">
+    <section
+      class="container grid grid-flow-row items-center justify-center text-secondary dark:text-primary"
+    >
       <div>
         <h1 class="py-2 text-center text-4xl font-bold">
           {res.data.gameByID.title}
@@ -193,7 +195,7 @@ if (error) {
                     {report.screenshots && (
                       <div class="grid grid-flow-row items-center justify-center">
                         {report.screenshots.map((img) => (
-                          <img src={img.value} />
+                          <img class="w-1/2" src={img.value} />
                         ))}
                       </div>
                     )}
