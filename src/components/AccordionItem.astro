@@ -51,7 +51,7 @@ const { header, index } = Astro.props;
   .accordion__header {
     display: flex;
     justify-content: space-between;
-    border: 2px solid #202020;
+    border: 2px solid #a7a3a3;
     padding: 1rem;
   }
 
@@ -66,12 +66,12 @@ const { header, index } = Astro.props;
 
   .accordion__item:only-of-type .accordion__header,
   .accordion__item:last-of-type .accordion__header {
-    border: 2px solid #202020;
+    border: 2px solid #a7a3a3;
   }
 
   .accordion__item:only-of-type .accordion__panel,
   .accordion__item:last-of-type .accordion__panel {
-    border-bottom: 2px solid #202020;
+    border-bottom: 2px solid #a7a3a3;
   }
 
   .header__toggle-indicator {
@@ -82,8 +82,8 @@ const { header, index } = Astro.props;
     visibility: hidden;
     overflow: hidden;
     height: 0;
-    border-left: 2px solid #202020;
-    border-right: 2px solid #202020;
+    border-left: 2px solid #a7a3a3;
+    border-right: 2px solid #a7a3a3;
     transition:
       height 0.3s ease-in-out,
       visibility 0s 0.3s;
@@ -94,7 +94,7 @@ const { header, index } = Astro.props;
   }
 
   .is-active .accordion__header {
-    border: 2px solid #202020;
+    border: 2px solid #a7a3a3;
   }
 
   .is-active .accordion__panel {
