@@ -5,6 +5,8 @@ import { Image } from "astro:assets";
 import mainline from "../../assets/mainline.svg";
 import early_access from "../../assets/early_access.svg";
 
+export const prerender = false;
+
 interface Release {
   assets: Array<{ name: string }>;
   html_url: string;
