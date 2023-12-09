@@ -79,6 +79,7 @@ if (error) {
   toggles.forEach((el) => {
     el.addEventListener("click", (ev) => {
       ev.preventDefault();
+      ev.stopImmediatePropagation();
       const toggle = ev.target! as HTMLElement;
       toggle.classList.toggle("collapsed");
       toggle.nextElementSibling!.classList.toggle("invisible");
@@ -92,6 +93,7 @@ if (error) {
   place_holder.forEach((el) => {
     el.addEventListener("click", (ev) => {
       ev.preventDefault();
+      ev.stopImmediatePropagation();
       const toggle = ev.target! as HTMLElement;
       toggle.previousElementSibling?.previousElementSibling?.dispatchEvent(
         new Event("click"),
