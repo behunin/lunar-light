@@ -63,12 +63,12 @@ export default function json2html(
     html += '<span class="json-literal">null</span>';
   } else if (json instanceof Array) {
     if (json.length > 0) {
-      html += '[<ol class="json-array">';
+      html += '[<ol class="json-array invisible h-0">';
       for (let i = 0; i < json.length; ++i) {
         html += "<li>";
         // Add toggle button if item is collapsable
         if (isCollapsable(json[i])) {
-          html += '<a href class="json-toggle"></a>';
+          html += '<a href class="json-toggle collapsed"></a>';
         }
         html += json2html(json[i], options);
         // Add comma if item is not last
@@ -87,7 +87,7 @@ export default function json2html(
     } else {
       let keyCount = Object.keys(json).length;
       if (keyCount > 0) {
-        html += '{<ul class="json-dict">';
+        html += '{<ol class="json-dict invisible h-0">';
         for (let key in json) {
           // define a parameter of the json value first to prevent get null from key when the key changed by the function `htmlEscape(key)`
           let jsonElement = Object.getOwnPropertyDescriptor(json, key)?.value;
@@ -99,7 +99,7 @@ export default function json2html(
           html += "<li>";
           // Add toggle button if item is collapsable
           if (isCollapsable(jsonElement)) {
-            html += '<a href class="json-toggle">' + keyRepr + "</a>";
+            html += '<a href class="json-toggle collapsed">' + keyRepr + "</a>";
           } else {
             html += keyRepr;
           }
@@ -110,7 +110,8 @@ export default function json2html(
           }
           html += "</li>";
         }
-        html += "</ul>}";
+        html += "</ol>";
+        html += '<a href class="json-placeholder text-link"></a><br/>}';
       } else {
         html += "{}";
       }

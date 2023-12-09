@@ -4,6 +4,8 @@ import json2html from "../../components/JsonViewer";
 import Accordion from "../../components/Accordion.astro";
 import AccordionItem from "../../components/AccordionItem.astro";
 
+import "../../styles/game.css";
+
 export const prerender = false;
 
 interface Value {
@@ -71,6 +73,32 @@ if (error) {
   });
 }
 ---
+
+<script>
+  const toggles = document.querySelectorAll<HTMLLinkElement>("a.json-toggle");
+  toggles.forEach((el) => {
+    el.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const toggle = ev.target! as HTMLElement;
+      toggle.classList.toggle("collapsed");
+      toggle.nextElementSibling!.classList.toggle("invisible");
+      toggle.nextElementSibling!.classList.toggle("h-0");
+      toggle.nextElementSibling!.nextElementSibling!.classList.toggle("hidden");
+    });
+  });
+
+  const place_holder =
+    document.querySelectorAll<HTMLLinkElement>("a.json-placeholder");
+  place_holder.forEach((el) => {
+    el.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const toggle = ev.target! as HTMLElement;
+      toggle.previousElementSibling?.previousElementSibling?.dispatchEvent(
+        new Event("click"),
+      );
+    });
+  });
+</script>
 
 <Layout title={res.data.gameByID.title}>
   <main>
@@ -180,7 +208,7 @@ if (error) {
                   }
                   index={idx}
                 >
-                  <div class="grid grid-flow-row items-center justify-center">
+                  <div class="grid grid-flow-row items-center justify-start">
                     <h2>Report ID: {report.id}</h2>
                     <div class="flex">
                       <span>Description:</span>
@@ -201,15 +229,20 @@ if (error) {
                     )}
                     <div>Author: {report.author}</div>
                     <div>Last Updated: {new Date(report.changed)}</div>
-                    <div>Device Details:</div>
-                    {report.device_details && (
-                      <div
-                        set:html={json2html(
-                          JSON.parse(report.device_details),
-                          {},
-                        )}
-                      />
-                    )}
+                    <div class="flex">
+                      Device Details:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {report.device_details && (
+                        <span class="inline-flex">
+                          <div
+                            class="json-html grid"
+                            set:html={
+                              '<a href class="json-toggle collapsed"></a>' +
+                              json2html(JSON.parse(report.device_details), {})
+                            }
+                          />
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </AccordionItem>
               ))}

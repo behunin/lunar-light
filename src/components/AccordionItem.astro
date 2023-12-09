@@ -8,7 +8,7 @@ interface Props {
 const { header, index } = Astro.props;
 ---
 
-<li class="accordion__item">
+<accord-ion-item>
   <h3>
     <button
       id=`accordion-header-${index}`
@@ -40,10 +40,36 @@ const { header, index } = Astro.props;
       <slot />
     </div>
   </div>
-</li>
+</accord-ion-item>
+
+<script>
+  class AccordionItem extends HTMLElement {
+    constructor() {
+      super();
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+          if (
+            !entry.target.parentElement?.parentElement?.classList.contains(
+              "is-active",
+            )
+          ) {
+            return;
+          }
+          const panel = entry.target.parentElement;
+          panel.style.height = `${entry.contentRect.height + 30}px`;
+        });
+      });
+
+      resizeObserver.observe(this.lastElementChild?.firstElementChild!);
+    }
+  }
+
+  customElements.define("accord-ion-item", AccordionItem);
+</script>
 
 <style>
-  .accordion__item,
+  accord-ion-item,
   .accordion__header {
     width: 100%;
   }
@@ -55,22 +81,22 @@ const { header, index } = Astro.props;
     padding: 1rem;
   }
 
-  .accordion__item .accordion__header {
+  accord-ion-item .accordion__header {
     border-bottom: 0;
   }
 
-  .accordion__item .accordion__header:focus {
+  accord-ion-item .accordion__header:focus {
     outline-offset: -6px;
     box-shadow: inset 0 0 0 2px white;
   }
 
-  .accordion__item:only-of-type .accordion__header,
-  .accordion__item:last-of-type .accordion__header {
+  accord-ion-item:only-of-type .accordion__header,
+  accord-ion-item:last-of-type .accordion__header {
     border: 2px solid #a7a3a3;
   }
 
-  .accordion__item:only-of-type .accordion__panel,
-  .accordion__item:last-of-type .accordion__panel {
+  accord-ion-item:only-of-type .accordion__panel,
+  accord-ion-item:last-of-type .accordion__panel {
     border-bottom: 2px solid #a7a3a3;
   }
 

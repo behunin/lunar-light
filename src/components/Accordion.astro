@@ -4,12 +4,14 @@ import AccordionItem from "./AccordionItem.astro";
 interface Props {
   children: typeof AccordionItem | (typeof AccordionItem)[];
 }
+
+const childr = Astro.props.children;
 ---
 
 <accord-ion>
-  <ul class="accordion__wrapper">
+  <div class="accordion__wrapper">
     <slot />
-  </ul>
+  </div>
 </accord-ion>
 
 <script>
@@ -19,7 +21,7 @@ interface Props {
 
       this.addEventListener("keydown", (event) => {
         const el = event.target! as HTMLElement;
-        const accordionItem = el.closest(".accordion__item");
+        const accordionItem = el.closest("accord-ion-item");
 
         if (event.key !== "Escape") return;
         if (!accordionItem) return;
@@ -34,9 +36,9 @@ interface Props {
         if (!el.closest(".accordion__header")) return;
 
         const accordionWrapper = el.closest(".accordion__wrapper")!;
-        const accordionItem = el.closest(".accordion__item");
+        const accordionItem = el.closest("accord-ion-item");
         const accordionItems = [
-          ...accordionWrapper.querySelectorAll(".accordion__item"),
+          ...accordionWrapper.querySelectorAll("accord-ion-item"),
         ];
         const index = accordionItems.findIndex(
           (element) => element === accordionItem,
@@ -64,26 +66,9 @@ interface Props {
 
       this.addEventListener("click", (event) => {
         const el = event.target! as HTMLElement;
-        if (!el.closest(".accordion__item")) return;
+        if (!el.closest("accord-ion-item")) return;
         this.toggleAccordionItem(event);
       });
-
-      const accordionItems = [...this.querySelectorAll(".accordion__item")];
-      const resizeObserver = new ResizeObserver((entries) => {
-        const toggledAccordionItems = accordionItems.filter((element) =>
-          element.classList.contains("is-active"),
-        );
-
-        toggledAccordionItems.forEach((toggledAccordionItem: Element) => {
-          const accordionPanel: HTMLElement =
-            toggledAccordionItem.querySelector(".accordion__panel")!;
-          accordionPanel.style.height = `${this.getPanelHeight(
-            toggledAccordionItem,
-          )}px`;
-        });
-      });
-
-      resizeObserver.observe(this);
     }
 
     getPanelHeight(accordionItem: Element) {
@@ -135,7 +120,7 @@ interface Props {
 
     toggleAccordionItem(event: Event) {
       const el = event.target! as HTMLElement;
-      const accordionItem = el.closest(".accordion__item");
+      const accordionItem = el.closest("accord-ion-item");
       if (!accordionItem || el.closest(".accordion__panel")) return;
 
       this.isAccordionOpen(accordionItem)
