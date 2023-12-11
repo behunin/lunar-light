@@ -74,31 +74,41 @@ if (error) {
 }
 ---
 
-<script is:inline>
-  const toggles = document.querySelectorAll<HTMLLinkElement>("a.json-toggle");
-  toggles.forEach((el) => {
-    el.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-      const toggle = ev.target;
-      toggle.classList.toggle("collapsed");
-      toggle.nextElementSibling.classList.toggle("invisible");
-      toggle.nextElementSibling.classList.toggle("h-0");
-      toggle.nextElementSibling.nextElementSibling.classList.toggle("hidden");
+<script>
+  function setup() {
+    const toggles = document.querySelectorAll<HTMLLinkElement>("a.json-toggle");
+    toggles.forEach((el) => {
+      el.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        const toggle = ev.target! as HTMLElement;
+        toggle.classList.toggle("collapsed");
+        toggle.nextElementSibling!.classList.toggle("invisible");
+        toggle.nextElementSibling!.classList.toggle("h-0");
+        toggle.nextElementSibling!.nextElementSibling!.classList.toggle(
+          "hidden",
+        );
+      });
     });
-  });
 
-  const place_holder =
-    document.querySelectorAll<HTMLLinkElement>("a.json-placeholder");
-  place_holder.forEach((el) => {
-    el.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-      const toggle = ev.target;
-      toggle.previousElementSibling?.previousElementSibling?.dispatchEvent(
-        new Event("click"),
-      );
+    const place_holder =
+      document.querySelectorAll<HTMLLinkElement>("a.json-placeholder");
+    place_holder.forEach((el) => {
+      el.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        const toggle = ev.target! as HTMLElement;
+        toggle.previousElementSibling?.previousElementSibling?.dispatchEvent(
+          new Event("click"),
+        );
+      });
     });
+  }
+
+  setup();
+
+  document.addEventListener("astro:after-preparation", () => {
+    setup();
   });
 </script>
 
