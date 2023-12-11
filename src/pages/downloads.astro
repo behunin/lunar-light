@@ -590,21 +590,6 @@ if (error) {
       copyText.classList.remove("active");
     }, 2500);
   });
-
-  document.addEventListener("astro:after-swap", () => {
-    setupPlatform();
-    setupListeners();
-
-    document.querySelectorAll(".hide-with-js").forEach((element) => {
-      const el = element as HTMLElement;
-      el.style.display = "none";
-    });
-
-    document.querySelectorAll(".show-with-js").forEach((element) => {
-      const el = element as HTMLElement;
-      el.style.display = "block";
-    });
-  });
 </script>
 
 <style>

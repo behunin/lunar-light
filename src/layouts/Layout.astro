@@ -1,5 +1,4 @@
 ---
-import { ViewTransitions } from "astro:transitions";
 import Navigation from "../components/Navigation.astro";
 interface Props {
   title: string;
@@ -18,9 +17,8 @@ const { title } = Astro.props;
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ViewTransitions />
   </head>
-  <header transition:persist class="sticky top-0 z-50 w-screen">
+  <header class="sticky top-0 z-50 w-screen">
     <Navigation>
       <li class="text-center font-bold">
         <a href="/blog">Blog</a>
@@ -119,4 +117,5 @@ const { title } = Astro.props;
       text-rendering: auto;
     }
   </style>
+
 </html>

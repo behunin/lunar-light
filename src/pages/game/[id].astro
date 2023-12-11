@@ -74,30 +74,27 @@ if (error) {
 }
 ---
 
-<script>
-  document.addEventListener("load", () => {
-    const toggles = document.querySelectorAll<HTMLLinkElement>("a.json-toggle");
+<script is:inline>
+  window.addEventListener("load", () => {
+    const toggles = document.querySelectorAll("a.json-toggle");
     toggles.forEach((el) => {
       el.addEventListener("click", (ev) => {
         ev.preventDefault();
         ev.stopImmediatePropagation();
-        const toggle = ev.target! as HTMLElement;
+        const toggle = ev.target;
         toggle.classList.toggle("collapsed");
-        toggle.nextElementSibling!.classList.toggle("invisible");
-        toggle.nextElementSibling!.classList.toggle("h-0");
-        toggle.nextElementSibling!.nextElementSibling!.classList.toggle(
-          "hidden",
-        );
+        toggle.nextElementSibling.classList.toggle("invisible");
+        toggle.nextElementSibling.classList.toggle("h-0");
+        toggle.nextElementSibling.nextElementSibling.classList.toggle("hidden");
       });
     });
 
-    const place_holder =
-      document.querySelectorAll<HTMLLinkElement>("a.json-placeholder");
+    const place_holder = document.querySelectorAll("a.json-placeholder");
     place_holder.forEach((el) => {
       el.addEventListener("click", (ev) => {
         ev.preventDefault();
         ev.stopImmediatePropagation();
-        const toggle = ev.target! as HTMLElement;
+        const toggle = ev.target;
         toggle.previousElementSibling?.previousElementSibling?.dispatchEvent(
           new Event("click"),
         );
