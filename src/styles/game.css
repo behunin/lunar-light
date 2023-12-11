@@ -38,7 +38,7 @@ a.json-toggle:focus {
 a.json-toggle:before {
   font-size: 1.1em;
   color: #c0c0c0;
-  content: "\25BC";
+  content: "\002D";
   position: absolute;
   display: inline-block;
   width: 1em;
@@ -52,7 +52,7 @@ a.json-toggle:hover:before {
 }
 
 a.json-toggle.collapsed:before {
-  transform: rotate(-90deg);
+  content: "\002B";
 }
 
 a.json-placeholder {
