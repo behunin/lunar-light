@@ -75,7 +75,7 @@ if (error) {
 ---
 
 <script>
-  function setup() {
+  document.addEventListener("load", () => {
     const toggles = document.querySelectorAll<HTMLLinkElement>("a.json-toggle");
     toggles.forEach((el) => {
       el.addEventListener("click", (ev) => {
@@ -103,12 +103,6 @@ if (error) {
         );
       });
     });
-  }
-
-  setup();
-
-  document.addEventListener("astro:after-preparation", () => {
-    setup();
   });
 </script>
 
