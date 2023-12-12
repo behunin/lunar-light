@@ -224,9 +224,11 @@ if (error) {
                       Playability: {report.playability[0].name[0].value}
                     </div>
                     {report.screenshots && (
-                      <div class="grid grid-flow-row items-center justify-center">
+                      <div class="grid grid-flow-row items-center justify-center md:grid-flow-col">
                         {report.screenshots.map((img) => (
-                          <img class="w-1/2" src={img.value} />
+                          <a href={img.value} target="_blank">
+                            <img class="w-1/2" src={img.value} />
+                          </a>
                         ))}
                       </div>
                     )}
