@@ -1,11 +1,16 @@
 ---
 interface Props {
-  header: string;
+  color: string;
+  cpu_brand: string;
+  gpu_vendor: string;
+  id: number;
+  author: string;
+  label: string;
   index: number;
   children: any;
 }
 
-const { header, index } = Astro.props;
+const { color, cpu_brand, gpu_vendor, id, author, label, index } = Astro.props;
 ---
 
 <accord-ion-item>
@@ -16,7 +21,23 @@ const { header, index } = Astro.props;
       aria-expanded="false"
       aria-controls=`accordion-panel-${index}`
     >
-      {header}
+      <div class="flex items-center justify-center">
+        {id}
+         --
+        <div
+          class="mx-2"
+          style={`background-color: ${color}; display: inline-block; width: 16px; height: 16px;`}
+        >
+        </div>
+         --
+        {cpu_brand}
+         --
+        {gpu_vendor}
+         --
+        {author}
+         --
+        {label}
+      </div>
       <svg
         class="header__toggle-indicator"
         aria-hidden="true"

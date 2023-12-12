@@ -72,6 +72,24 @@ if (error) {
     statusText: "Not found",
   });
 }
+
+function colorIndex(rating: string) {
+  switch (rating) {
+    case "Perfect":
+      return "#5c93ed";
+    case "Good":
+      return "#47d35c";
+    case "Bad":
+      return "#f2d624";
+    case "Intro/Menu":
+      return "red";
+    case "Won't Boot":
+      return "#828282";
+    case "Unknown":
+      return "black";
+  }
+  return "transparent";
+}
 ---
 
 <script is:inline>
@@ -204,53 +222,59 @@ if (error) {
           <>
             <h2 class="py-1 text-2xl font-bold">Compatibility Reports</h2>
             <Accordion>
-              {res.data.gameByID.reports.map((report, idx) => (
-                <AccordionItem
-                  header={
-                    report.id + " -- " + report.author + " -- " + report.label
-                  }
-                  index={idx}
-                >
-                  <div class="grid grid-flow-row items-center justify-start">
-                    <h2>Report ID: {report.id}</h2>
-                    <div class="flex">
-                      <span>Description:</span>
-                      &nbsp;
-                      {report.description && (
-                        <div set:html={report.description} />
-                      )}
-                    </div>
-                    <div>
-                      Playability: {report.playability[0].name[0].value}
-                    </div>
-                    {report.screenshots && (
-                      <div class="grid grid-flow-row items-center justify-center md:grid-flow-col">
-                        {report.screenshots.map((img) => (
-                          <a href={img.value} target="_blank">
-                            <img class="w-1/2" src={img.value} />
-                          </a>
-                        ))}
+              {res.data.gameByID.reports.map((report, idx) => {
+                const device_details = JSON.parse(report.device_details);
+                return (
+                  <AccordionItem
+                    author={report.author}
+                    label={report.label}
+                    id={report.id}
+                    index={idx}
+                    color={colorIndex(report.playability[0].name[0].value)}
+                    cpu_brand={device_details["Host"]["CPU Brand"]}
+                    gpu_vendor={device_details["Host"]["GPU Vendor"]}
+                  >
+                    <div class="grid grid-flow-row items-center justify-start">
+                      <h2>Report ID: {report.id}</h2>
+                      <div class="flex">
+                        <span>Description:</span>
+                        &nbsp;
+                        {report.description && (
+                          <div set:html={report.description} />
+                        )}
                       </div>
-                    )}
-                    <div>Author: {report.author}</div>
-                    <div>Last Updated: {new Date(report.changed)}</div>
-                    <div class="flex">
-                      Device Details:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {report.device_details && (
-                        <span class="inline-flex">
-                          <div
-                            class="json-html grid"
-                            set:html={
-                              '<a href class="json-toggle collapsed"></a>' +
-                              json2html(JSON.parse(report.device_details), {})
-                            }
-                          />
-                        </span>
+                      <div>
+                        Playability: {report.playability[0].name[0].value}
+                      </div>
+                      {report.screenshots && (
+                        <div class="grid grid-flow-row items-center justify-center gap-4 md:grid-flow-col">
+                          {report.screenshots.map((img) => (
+                            <a href={img.value} target="_blank">
+                              <img src={img.value} />
+                            </a>
+                          ))}
+                        </div>
                       )}
+                      <div>Author: {report.author}</div>
+                      <div>Last Updated: {new Date(report.changed)}</div>
+                      <div class="flex">
+                        Device Details:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {report.device_details && (
+                          <span class="inline-flex">
+                            <div
+                              class="json-html grid"
+                              set:html={
+                                '<a href class="json-toggle collapsed"></a>' +
+                                json2html(device_details, {})
+                              }
+                            />
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </AccordionItem>
-              ))}
+                  </AccordionItem>
+                );
+              })}
             </Accordion>
           </>
         ) : (
