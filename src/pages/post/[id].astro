@@ -104,10 +104,12 @@ if (error) {
 </div>
 
 <script>
-  import ImageCompare from "image-compare-viewer";
+  import ImageCompare from "../../components/imagecomapre.js";
 
   window.addEventListener("load", () => {
-    const viewers = document.querySelectorAll("#image-compare");
+    const viewers = document.querySelectorAll(
+      "#image-compare",
+    ) as NodeListOf<HTMLDivElement>;
     viewers.forEach((element) => {
       const view = new ImageCompare(element).mount();
     });
@@ -120,8 +122,11 @@ if (error) {
 
   function buildHovercard(data: any) {
     const elem = document.getElementById("gh-template")!;
-    const title = elem.getElementsByClassName("gh-hover-title")[0];
-    title.firstChild!.innerText = data.title;
+    const title = elem.getElementsByClassName(
+      "gh-hover-title",
+    )[0] as HTMLLinkElement;
+    const inner = title.firstChild! as HTMLElement;
+    inner.innerText = data.title;
     title.href = data.html_url;
     const mergedAt = data.merged_at;
     let state = "open";
@@ -130,14 +135,16 @@ if (error) {
       let parsedDate = moment.utc(mergedAt);
       mergedDate = parsedDate.fromNow();
       state = "merged";
-      elem.getElementsByClassName("gh-hover-date")[0].innerText =
-        `Merged ${mergedDate}.`;
+      (
+        elem.getElementsByClassName("gh-hover-date")[0] as HTMLElement
+      ).innerText = `Merged ${mergedDate}.`;
     } else if (data.state === "closed") {
       state = "closed";
     }
     elem.getElementsByClassName("gh-hover-icon")[0].classList.add(state);
-    elem.getElementsByClassName("gh-hover-number")[0].innerText =
-      `#${data.number}`;
+    (
+      elem.getElementsByClassName("gh-hover-number")[0] as HTMLElement
+    ).innerText = `#${data.number}`;
     return elem.innerHTML;
   }
 
