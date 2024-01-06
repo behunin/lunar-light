@@ -27,7 +27,7 @@ myHeaders.append("Accept", "application/json");
 
 let error = false;
 const res: Article = await fetch(
-  `http://yuzu-cms.ddev.site/gaaaraph?queryId=articleByID&variables={"id":${id}}`,
+  `https://staging.yuzu-emu.org/gaaaraph?queryId=articleByID&variables={"id":${id}}`,
   { headers: myHeaders, method: "GET" },
 )
   .then(async (res) => {
