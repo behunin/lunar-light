@@ -1,6 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
+import "tippy.js/dist/tippy.css";
+import "../../styles/post.css";
+import "../../styles/image-compare-viewer.min.css";
+
 export const prerender = false;
 
 interface Article {
@@ -9,7 +13,9 @@ interface Article {
       id: number;
       title: string;
       author: string;
+      banner: string;
       body: string;
+      created: string;
     };
   };
 }
@@ -21,7 +27,7 @@ myHeaders.append("Accept", "application/json");
 
 let error = false;
 const res: Article = await fetch(
-  `https://staging.yuzu-emu.org/gaaaraph?queryId=articleByID&variables={"id":${id}}`,
+  `http://yuzu-cms.ddev.site/gaaaraph?queryId=articleByID&variables={"id":${id}}`,
   { headers: myHeaders, method: "GET" },
 )
   .then(async (res) => {
@@ -46,10 +52,22 @@ if (error) {
 {
   res.data.article && (
     <Layout title={res.data.article.title}>
+      <div>
+        <img src={res.data.article.banner} />
+      </div>
       <article class="container text-secondary dark:text-primary">
         <h1 class="py-2 text-center text-4xl font-bold">
           {res.data.article.title}
         </h1>
+        <div class="grid">
+          <span class="px-2 py-4 text-center text-2xl">
+            Written by
+            <a href="https://community.citra-emu.org/u/GoldenX86/summary">
+              GoldenX86
+            </a>
+            on {new Date(res.data.article.created).toLocaleDateString()}
+          </span>
+        </div>
         <section>
           <div class="grid items-center justify-center">
             <div
@@ -62,3 +80,113 @@ if (error) {
     </Layout>
   )
 }
+
+<div id="gh-template" style="display: none;">
+  <span>
+    <svg
+      class="gh-hover-icon"
+      viewBox="0 0 16 16"
+      version="1.1"
+      width="16"
+      height="16"
+      aria-hidden="true"
+      ><path
+        fill-rule="evenodd"
+        d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"
+      ></path></svg
+    >
+  </span>
+  <span>
+    <a class="gh-hover-title" href=""><strong></strong></a>&nbsp;<span
+      class="gh-hover-number"></span>
+  </span>
+  <p class="gh-hover-date"></p>
+</div>
+
+<script>
+  import ImageCompare from "image-compare-viewer";
+
+  window.addEventListener("load", () => {
+    const viewers = document.querySelectorAll("#image-compare");
+    viewers.forEach((element) => {
+      const view = new ImageCompare(element).mount();
+    });
+  });
+</script>
+
+<script>
+  import moment from "moment";
+  import tippy, { followCursor } from "tippy.js";
+
+  function buildHovercard(data: any) {
+    const elem = document.getElementById("gh-template")!;
+    const title = elem.getElementsByClassName("gh-hover-title")[0];
+    title.firstChild!.innerText = data.title;
+    title.href = data.html_url;
+    const mergedAt = data.merged_at;
+    let state = "open";
+    let mergedDate = "";
+    if (mergedAt) {
+      let parsedDate = moment.utc(mergedAt);
+      mergedDate = parsedDate.fromNow();
+      state = "merged";
+      elem.getElementsByClassName("gh-hover-date")[0].innerText =
+        `Merged ${mergedDate}.`;
+    } else if (data.state === "closed") {
+      state = "closed";
+    }
+    elem.getElementsByClassName("gh-hover-icon")[0].classList.add(state);
+    elem.getElementsByClassName("gh-hover-number")[0].innerText =
+      `#${data.number}`;
+    return elem.innerHTML;
+  }
+
+  async function createHovercard(pr: string) {
+    return await fetch(
+      `https://api.github.com/repos/yuzu-emu/yuzu/pulls/${pr}`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+        },
+        method: "GET",
+      },
+    )
+      .then(async (response) => {
+        return await response.json();
+      })
+      .then((json) => {
+        return buildHovercard(json);
+      });
+  }
+
+  function showHovercard(instance: any) {
+    if (instance._loading) return;
+    if (instance._cached) {
+      instance.setContent(instance._cached);
+      return;
+    }
+    instance._loading = true;
+    const pr_number = instance.reference.getAttribute("data-gh-pr");
+    createHovercard(pr_number)
+      .then((content) => {
+        instance._cached = content;
+        instance.setContent(content);
+        instance._loading = false;
+      })
+      .catch((error) => {
+        instance.setContent("Error fetching data from GitHub: " + error);
+        instance._loading = false;
+      });
+  }
+
+  tippy(".gh-hover", {
+    content: "Loading...",
+    onShow(instance) {
+      showHovercard(instance);
+    },
+    allowHTML: true,
+    followCursor: "horizontal",
+    interactive: true,
+    plugins: [followCursor],
+  });
+</script>

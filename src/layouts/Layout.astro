@@ -27,7 +27,7 @@ const { title } = Astro.props;
         <a href="/downloads/">Download</a>
       </li>
       <li class="text-center font-bold">
-        <a href="/faqs">FAQs</a>
+        <a href="https://steadfast-series.pages.dev/">Docs</a>
       </li>
       <li class="text-center font-bold lg:px-3">
         <a href="/compatibility">Compatibility</a>
@@ -71,6 +71,8 @@ const { title } = Astro.props;
     }
     html {
       scroll-padding-top: 20rem;
+      text-rendering: optimizeLegibility;
+      text-size-adjust: 100%;
     }
     body {
       @apply bg-secondary dark:bg-primary;
@@ -117,5 +119,6 @@ const { title } = Astro.props;
       text-rendering: auto;
     }
   </style>
+
 
 </html>

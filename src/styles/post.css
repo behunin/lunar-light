@@ -1,0 +1,44 @@
+body, button, input, optgroup, select, textarea {
+  font-family: BlinkMacSystemFont,-apple-system,segoe ui,roboto,oxygen,ubuntu,cantarell,fira sans,droid sans,helvetica neue,helvetica,arial,sans-serif;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  text-align: justify;
+  line-height: 1.8;
+  font-size: 1.09em;
+  font-weight: 600;
+}
+
+h2 {
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.125;
+  font-size: 1.75em;
+  margin-bottom: .5714em;
+}
+
+h2:not(:first-child) {
+  margin-top: 1.1428em;
+}
+
+.gh-hover-icon.open { 
+  filter: invert(56%) sepia(47%) saturate(665%) hue-rotate(77deg) brightness(99%) contrast(83%); 
+}
+.gh-hover-icon.closed {
+  filter: invert(50%) sepia(95%) saturate(3977%) hue-rotate(336deg) brightness(95%) contrast(90%);
+}
+.gh-hover-icon.merged {
+  filter: invert(47%) sepia(17%) saturate(4072%) hue-rotate(228deg) brightness(95%) contrast(89%);
+}
+.gh-hover {
+  border-bottom: dotted;
+}
+
+.gh-hover-title {
+  color: #03a9f4;  
+}
